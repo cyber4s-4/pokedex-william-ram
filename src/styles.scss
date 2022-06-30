@@ -1,5 +1,6 @@
 body{
-  background-color: rgb(235, 235, 235);
+  background: rgb(238,174,202);
+  background: radial-gradient(circle, rgb(228, 196, 210) 0%, rgba(148,187,233,1) 100%);
   display: flex;
   margin: 0;
   justify-content: center;
@@ -12,36 +13,56 @@ body{
     align-self: center;
     height: fit-content;
     width: 60vw;
+    height: 70vh;
     border-radius: 15px;
 }
 
-.product {
+.pokemon-info {
+  display: flex;
+  height: 100%;
   width: 100%;
-  height: 200px;
-  background-color: rgba(138, 137, 127, 0.7);
+  background-color: rgba(255, 255, 255, 0.9);
   margin: 10px;
   border-radius: 10px;
   transition: 0.5s;
 
-  .img {
-    margin: 1%;
-    margin-top: 2%;
-    padding: 5px;
-    float: right;
-    max-width: 20%;
-    max-height: 80%;
-    background-color: white;
-    border: solid 1px gray;
-  }
   .inner-text-container {
-    display: inline-block;
+    display: block;
     margin-top: 2%;
     height: 80%;
     width: 50%;
     padding: 2px 8px;
+
+    #general-info-container{
+      border-radius: 5px;
+      margin-top: 10%;
+      width: 80%;
+      padding : 5px;
+      background-color: lightgray;
+      div{
+        margin:5px;
+      }
+    }
+
+    #stats-container{
+      border-radius: 5px;
+      margin-top: 10%;
+      width: 80%;
+      padding : 5px;
+      background-color: lightgray;
+    }
+
+    #abilities-container{
+      border-radius: 5px;
+      margin-top: 10%;
+      width: 80%;
+      padding : 5px;
+      background-color: lightgray;
+    }
+
   }
 
-  .logo-container {
+  .pokemon-img-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -53,16 +74,8 @@ body{
     height: 80%;
     text-align: center;
 
-    .logo-img {
-      width: 80%;
-      margin-top: auto;
-    }
-
-    .price-text {
-      color: rgb(0, 0, 0);
-      font-size: 130%;
-      font-weight: 550;
-      margin-top: auto;
+    .pokemon-img {
+      width: 100%;
     }
   }
 }
