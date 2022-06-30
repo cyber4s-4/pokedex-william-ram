@@ -1,15 +1,35 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Starter Project</title>
   <base href="/">
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1"/>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js"></script>
 </head>
+
 <body>
-  <h1>Welcome to our pokedex!</h1>
+  <div class="container">
+    <div class="product" id="R410MA-212.BK128-11">
+      <img src="" class="img">
+      <div class="inner-text-container">
+        <h3 style="border-bottom: 1px solid black;">{name}</h3>
+        <p>
+          <strong> Name: </strong> {name}
+          <strong> stats: </strong> {stats}
+          <strong> abilities: </strong> {abilities}
+          <strong> height: </strong> {height}
+          <strong> weight: </strong> {weight}     
+        </p>
+      </div>
+      <div class="pokemon-img-container">
+        <img src="{pokemon-img}" class="pokemon-img" alt="Pokemon image">
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>

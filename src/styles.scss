@@ -1,56 +1,68 @@
-$font-family: Helvetica, sans-serif;
-$primary-color: #333;
-$text-color: white;
+body{
+  background-color: rgb(235, 235, 235);
+  display: flex;
+  margin: 0;
+  justify-content: center;
+  flex-direction: column;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
 
-body {
-  font-family: $font-family;
-  color: $text-color;
-  background: $primary-color;
-  >.alert {
-    >input {
-      outline: none;
-    }
+.container{
+    margin: 50px;
+    align-self: center;
+    height: fit-content;
+    width: 60vw;
+    border-radius: 15px;
+}
+
+.product {
+  width: 100%;
+  height: 200px;
+  background-color: rgba(138, 137, 127, 0.7);
+  margin: 10px;
+  border-radius: 10px;
+  transition: 0.5s;
+
+  .img {
+    margin: 1%;
+    margin-top: 2%;
+    padding: 5px;
+    float: right;
+    max-width: 20%;
+    max-height: 80%;
+    background-color: white;
+    border: solid 1px gray;
   }
-  >.select {
-    margin-top: 10px;
-    >select {
-      outline: none;
-    }
+  .inner-text-container {
+    display: inline-block;
+    margin-top: 2%;
+    height: 80%;
+    width: 50%;
+    padding: 2px 8px;
   }
-  #display {
-    height: 200px;
-    font-size: 60px;
+
+  .logo-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-  }
-  #dialog {
-    display: none;
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,.3);
-    top: 0;
-    left: 0;
     justify-content: center;
-    align-items: center;
-    >.card {
-      width: 300px;
-      padding: 15px;
-      border-radius: 7px;
-      background: white;
-      color: #222;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      #message {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 10px;
-      }
-      button {
-        width: 100px;
-      }
+    margin: 1%;
+    margin-top: 3%;
+    float: left;
+    width: 20%;
+    height: 80%;
+    text-align: center;
+
+    .logo-img {
+      width: 80%;
+      margin-top: auto;
+    }
+
+    .price-text {
+      color: rgb(0, 0, 0);
+      font-size: 130%;
+      font-weight: 550;
+      margin-top: auto;
     }
   }
 }
