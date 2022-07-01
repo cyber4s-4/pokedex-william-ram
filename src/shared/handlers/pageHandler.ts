@@ -18,17 +18,11 @@ export default class PageHandler {
         // Make a fetch and add it to the local storage?
         const spriteLink = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png';
         if (localStorage.getItem('pokedex') === null) {
-            const pokemonsList = await (await (await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')).json());
+            const pokemonsList =  (await (await fetch('https://pokeapi.co/api/v2/pokemon?limit=906&offset=0')).json());
             for(let i = 1; i < 906; i++) {
                 const pokemonImgLink = spriteLink.replace('{id}', i.toString());
                 const pokemon = pokemonsList['results'][i];
                 pokemonsArray.push(new Pokemon(new BasicPokemonInfo(i.toString(), pokemon['name'], pokemonImgLink)));
-            }
-            for(let i = 10001; i < 10250; i++) {
-                const pokemonImgLink = spriteLink.replace('{id}', i.toString());
-                const pokemon = pokemonsList['results'][i];
-                pokemonsArray.push(new Pokemon(new BasicPokemonInfo(i.toString(), pokemon['name'], pokemonImgLink)));
-
             }
             localStorage.setItem('pokedex', JSON.stringify(pokemonsArray));
         } else {
