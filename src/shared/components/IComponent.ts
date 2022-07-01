@@ -1,4 +1,4 @@
-import { Pokemon } from "../utils/pokemon";
+import Pokemon from "../utils/pokemon";
 
 export default interface IComponent {
   parentElement: HTMLElement;
@@ -6,6 +6,6 @@ export default interface IComponent {
   template: string;
   render(): void;
   update(data: Pokemon): void;
-// eslint-disable-next-line semi
+  // eslint-disable-next-line semi
 }
 

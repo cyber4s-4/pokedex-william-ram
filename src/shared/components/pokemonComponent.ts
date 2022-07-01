@@ -1,4 +1,4 @@
-import { Pokemon } from '../utils/pokemon';
+import Pokemon from '../utils/pokemon';
 import IComponent from './IComponent';
 /**
  * The extended information of a pokemon.
@@ -45,11 +45,11 @@ export default class PokemonComponent implements IComponent {
 
   render(): void {
     let finalTemplate = this.template;
-    finalTemplate = finalTemplate.replace('{pokemon-img}', this.pokemonData.img);
-    finalTemplate = finalTemplate.replace('{name}', this.pokemonData.name);
-    finalTemplate = finalTemplate.replace('{name}', this.pokemonData.name);
-    finalTemplate = finalTemplate.replace('{height}', this.pokemonData.height);
-    finalTemplate = finalTemplate.replace('{weight}', this.pokemonData.weight);
+    finalTemplate = finalTemplate.replace('{pokemon-img}', this.pokemonData.basicInfo.img);
+    finalTemplate = finalTemplate.replace('{name}', this.pokemonData.basicInfo.name);
+    finalTemplate = finalTemplate.replace('{name}', this.pokemonData.basicInfo.name);
+    finalTemplate = finalTemplate.replace('{height}', this.pokemonData.height!);
+    finalTemplate = finalTemplate.replace('{weight}', this.pokemonData.weight!);
     finalTemplate = finalTemplate.replace('{abilityComponent}', this.createAbilitiesString());
     finalTemplate = finalTemplate.replace('{statComponent}', this.createStatsString());
 
@@ -64,7 +64,7 @@ export default class PokemonComponent implements IComponent {
       {effect}
     </div>`;
     let finalTemplate = statsTemplate;
-    for (const ability of this.pokemonData.abilities) {
+    for (const ability of this.pokemonData.abilities!) {
       finalTemplate = finalTemplate.replace(`{name}`, ability.name);
       finalTemplate = finalTemplate.replace(`{effect}`, ability.effect);
       finalTemplate = finalTemplate.concat(this.template + '\n');
@@ -78,7 +78,7 @@ export default class PokemonComponent implements IComponent {
       {name}: {baseStat}
     </div>`;
     let finalTemplate = statsTemplate;
-    for (const stat of this.pokemonData.stats) {
+    for (const stat of this.pokemonData.stats!) {
       finalTemplate = finalTemplate.replace(`{name}`, stat.name);
       finalTemplate = finalTemplate.replace(`{baseStat}`, stat.baseStat.toString());
       finalTemplate = finalTemplate.concat(this.template + '\n');

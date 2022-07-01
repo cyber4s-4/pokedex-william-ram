@@ -8,10 +8,10 @@ export default class PageHandler {
     constructor() {
         this.components = [];
         this.pokemonsStorage = [];
-        this.fetchPokemonData().then((data) => this.pokemonsStorage = data);
+        this.fetchBasicPokemonData().then((data) => this.pokemonsStorage = data);
     }
 
-    private async fetchPokemonData(): Promise<Pokemon[]> {
+    private async fetchBasicPokemonData(): Promise<Pokemon[]> {
         let pokemonsArray: Pokemon[] = [];
         // https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0 -> To get a list of all the pokemons
         // Maybe cache on the fly whenever an user clicks on a pokemon, if it's not existing on their local storage
@@ -30,14 +30,24 @@ export default class PageHandler {
                 pokemonsArray.push(new Pokemon(new BasicPokemonInfo(i.toString(), pokemon['name'], pokemonImgLink)));
 
             }
-            localStorage.setItem('basic-pokemon-data', JSON.stringify(pokemonsArray));
+            localStorage.setItem('pokedex', JSON.stringify(pokemonsArray));
         } else {
-            // By using 'as Product' we don't need any deserialize function because we are sure this is a Product[] object.
             pokemonsArray = (JSON.parse(localStorage.getItem('pokedex') || '{}') as Pokemon[]);
         }
         return pokemonsArray;
     }
 
+    protected updateLocalStorage(): void {
+        localStorage.setItem('pokedex', JSON.stringify(this.pokemonsStorage));
+    }
+
+    protected getPokemonById(id: string): Pokemon {
+        return this.pokemonsStorage.find((pokemonData) => pokemonData.basicInfo.id === id) || new Pokemon(new BasicPokemonInfo('-1', 'Not found', ''));
+    }
+
+    protected isPokemonBasicInfo(id: string): boolean {
+        return this.getPokemonById(id).abilities === undefined;
+    }
 
     protected renderComponents(parentElement: HTMLElement): void {
         parentElement.innerHTML = '';

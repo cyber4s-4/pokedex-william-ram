@@ -1,24 +1,22 @@
-import IComponent from "../components/IComponent";
-import { Pokemon } from "../utils/pokemon";
+import PokemonListComponent from "../components/pokemonListComponent";
+import Pokemon from "../utils/pokemon";
+import PageHandler from "./pageHandler";
 
-export default class MainPage {
-     
-    private pokemonComponents: IComponent[];
-    private pokemonsData: Pokemon[];
+export default class MainPage extends PageHandler {
+
     constructor() {
-        this.pokemonComponents = [];
-        this.pokemonsData = [];
+        super();
+        this.generateBasicPokemonList();
     }
-    
-    public async generateBasicPokemonList(): Promise<void> {
-        const pokemonsJSONList = await (await fetch('https://pokeapi.co/api/v2/pokemon/pokemon/?limit=905')).json();
-        for(let result of pokemonsJSONList['results']){
-            const pokemonJson = await (await fetch(result['url'])).json();
-            this.newPokemonFromJson(pokemonJson);
-        }
+
+    public generateBasicPokemonList(): void {
+        // TODO: Decide the name of the list container for the basic Pokemon list.
+        // TODO: Decide if the container is a list or a div.
+        const pokemonListContainer = document.getElementById('???') as HTMLDivElement;
+        this.pokemonsStorage.forEach((pokemonData) => this.createComponent(pokemonListContainer, pokemonData));
     }
-    private newPokemonFromJson(pokemonJson: object) {
-       
+    private createComponent(parentContainer: HTMLDivElement, pokemonData: Pokemon) {
+        this.components.push(new PokemonListComponent(parentContainer, pokemonData));
     }
-    
+
 }

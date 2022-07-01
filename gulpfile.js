@@ -29,7 +29,7 @@ gulp.task('scss', () => {
 
 // Transfers index
 gulp.task('index', () => {
-  return gulp.src(['./src/index.html', './src/favicon.ico'])
+  return gulp.src(['./src/pages/*.html', './src/favicon.ico'])
     .pipe(gulp.dest('./dist'));
 });
 
@@ -57,7 +57,7 @@ gulp.task('watch-scss', () => {
 
 // Watch html files
 gulp.task('watch-html', () => {
-  return gulp.watch('./src/index.html', gulp.series('index'));
+  return gulp.watch('./src/pages/*.html', gulp.series('index'));
 });
 
 // Watch tsc files
