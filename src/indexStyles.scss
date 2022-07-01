@@ -9,6 +9,25 @@ body {
 
 }
 
+#background-img{
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: -1;
+  height: 90vh;
+}
+#pikachu-img{
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: -1;
+  height: 50vh;
+}
+
 #container {
   margin: 50px;
   align-self: center;

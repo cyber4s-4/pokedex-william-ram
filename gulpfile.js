@@ -33,6 +33,12 @@ gulp.task('index', () => {
     .pipe(gulp.dest('./dist'));
 });
 
+//Transfer Images
+gulp.task('images', () => {
+  return gulp.src(['./src/shared/images/*.jpg', './src/shared/images/*.png'])
+    .pipe(gulp.dest('./dist/images'));
+});
+
 // Browser Sync
 gulp.task('browser-sync', () => {
   browserSync.init({
@@ -84,6 +90,7 @@ gulp.task('default', gulp.series(
   'index',
   'tsc',
   'build',
+  'images',
   gulp.parallel(
     'browser-sync',
     'browser-sync-watch',
