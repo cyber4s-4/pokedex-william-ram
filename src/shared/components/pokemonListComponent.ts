@@ -1,4 +1,4 @@
-import { Pokemon } from "../utils/pokemon";
+import Pokemon from "../utils/pokemon";
 import IComponent from "./IComponent";
 
 /**

@@ -1,11 +1,17 @@
-export class Pokemon {
+export default class Pokemon {
     constructor(
+        public basicInfo: BasicPokemonInfo,
+        public stats?: Stat[],
+        public abilities?: Ability[],
+        public height?: string,
+        public weight?: string,
+    ) { }
+}
+
+export class BasicPokemonInfo {
+    constructor (
         public id: string,
         public name: string,
-        public stats: Stat[],
-        public abilities: Ability[],
-        public height: string,
-        public weight: string,
         public img: string
     ) { }
 }

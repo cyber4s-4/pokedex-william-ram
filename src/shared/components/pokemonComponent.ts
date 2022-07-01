@@ -45,6 +45,8 @@ export default class PokemonComponent implements IComponent {
 
   render(): void {
     let finalTemplate = this.template;
+    finalTemplate = finalTemplate.replace('{pokemon-img}', this.pokemonData.img);
+    finalTemplate = finalTemplate.replace('{name}', this.pokemonData.name);
     finalTemplate = finalTemplate.replace('{name}', this.pokemonData.name);
     finalTemplate = finalTemplate.replace('{height}', this.pokemonData.height);
     finalTemplate = finalTemplate.replace('{weight}', this.pokemonData.weight);
