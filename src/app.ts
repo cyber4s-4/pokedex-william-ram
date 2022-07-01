@@ -9,7 +9,6 @@ window.addEventListener('load', (e) => {
   else if (window.location.pathname === "/pokemon.html") {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('id')) {
-      console.log(1);
       const id: string = urlParams.get('id')!;
       const handler = new extendedInfoHandler(id);
     }

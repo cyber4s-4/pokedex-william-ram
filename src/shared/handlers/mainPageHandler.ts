@@ -12,8 +12,6 @@ export default class MainPage extends PageHandler {
     }
 
     public generateBasicPokemonList(): void {
-        // TODO: Decide the name of the list container for the basic Pokemon list.
-        // TODO: Decide if the container is a list or a div.
         const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
         this.pokemonsStorage.forEach((pokemonData) => this.createComponent(pokemonListContainer, pokemonData));
     }

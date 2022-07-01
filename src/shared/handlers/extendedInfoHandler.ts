@@ -16,12 +16,9 @@ export default class extendedInfoHandler extends PageHandler {
      */
 
     private async fetchExtendedInfo(id: string): Promise<void> {
-        // TODO: Check if the info is basic via PageHandler.isPokemonBasicInfo, if so make the fetch,
-        // else pull the data from the data array and construct the PokemonComponent to the page and call
-        // PageHandler.updateLocalStorage to make the entry cached.
         if (this.isPokemonBasicInfo(id)) {
             const pokemonJSON = (await (await fetch('https://pokeapi.co/api/v2/pokemon/' + id)).json());
-            let pokemon = this.getPokemonById(id);
+            const pokemon = this.getPokemonById(id);
             pokemon.abilities = [];
             pokemon.stats = [];
             for (const abilityJSON of pokemonJSON['abilities']) {
@@ -32,8 +29,12 @@ export default class extendedInfoHandler extends PageHandler {
             }
             pokemon.height = pokemonJSON['height'];
             pokemon.weight = pokemonJSON['weight'];
-            console.log( pokemon.abilities,  pokemon.stats);
             const pokemonComponent = new PokemonComponent(document.getElementById('container') as HTMLDivElement , pokemon);
+            pokemonComponent.render();
+            this.updateLocalStorage();
+        } else {
+            const pokemon = this.getPokemonById(id);
+            const pokemonComponent = new PokemonComponent(document.getElementById('container') as HTMLDivElement, pokemon);
             pokemonComponent.render();
         }
     }

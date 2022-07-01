@@ -8,26 +8,22 @@ export default class PageHandler {
     constructor() {
         this.components = [];
         this.pokemonsStorage = [];
-        this.fetchBasicPokemonData().then((data) => this.pokemonsStorage = data);
+        this.fetchBasicPokemonData();
     }
 
-    private async fetchBasicPokemonData(): Promise<Pokemon[]> {
-        // https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0 -> To get a list of all the pokemons
-        // Maybe cache on the fly whenever an user clicks on a pokemon, if it's not existing on their local storage
-        // Make a fetch and add it to the local storage?
+    private async fetchBasicPokemonData(): Promise<void> {
         const spriteLink = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png';
         if (localStorage.getItem('pokedex') === null) {
-            const pokemonsList =  (await (await fetch('https://pokeapi.co/api/v2/pokemon?limit=899&offset=0')).json());
-            for(let i = 0; i < 898; i++) {
-                const pokemonImgLink = spriteLink.replace('{id}', (i+1).toString());
+            const pokemonsList = (await (await fetch('https://pokeapi.co/api/v2/pokemon?limit=899&offset=0')).json());
+            for (let i = 0; i < 898; i++) {
+                const pokemonImgLink = spriteLink.replace('{id}', (i + 1).toString());
                 const pokemon = pokemonsList['results'][i];
-                this.pokemonsStorage.push(new Pokemon(new BasicPokemonInfo((i+1).toString(), pokemon['name'], pokemonImgLink)));
+                this.pokemonsStorage.push(new Pokemon(new BasicPokemonInfo((i + 1).toString(), pokemon['name'], pokemonImgLink)));
             }
             localStorage.setItem('pokedex', JSON.stringify(this.pokemonsStorage));
         } else {
             this.pokemonsStorage = (JSON.parse(localStorage.getItem('pokedex') || '{}') as Pokemon[]);
-        }      
-        return this.pokemonsStorage;
+        }
     }
 
     protected updateLocalStorage(): void {
@@ -44,7 +40,6 @@ export default class PageHandler {
 
     protected renderComponents(parentElement: HTMLElement): void {
         parentElement.innerHTML = '';
-        console.log(this.components);
         this.components.forEach((component) => component.render());
     }
 }
