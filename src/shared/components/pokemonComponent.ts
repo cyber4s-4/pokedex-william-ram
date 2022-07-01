@@ -1,4 +1,5 @@
 import Pokemon from '../utils/pokemon';
+import { htmlToElement } from '../utils/templateBuilder';
 import IComponent from './IComponent';
 /**
  * The extended information of a pokemon.
@@ -51,25 +52,22 @@ export default class PokemonComponent implements IComponent {
     finalTemplate = finalTemplate.replace('{height}', this.pokemonData.height!);
     finalTemplate = finalTemplate.replace('{weight}', this.pokemonData.weight!);
     finalTemplate = finalTemplate.replace('{abilityComponent}', this.createAbilitiesString());
-    finalTemplate = finalTemplate.replace('{statComponent}', this.createStatsString());
-
+    finalTemplate = finalTemplate.replace('{statsComponent}', this.createStatsString());
+    const element = htmlToElement(finalTemplate);
+    this.parentElement.appendChild(element);
   }
 
   private createAbilitiesString(): string {
     const statsTemplate = `
     <div> 
-      {name}:
-    </div>
-    <div> 
-      {effect}
+      {name}
     </div>`;
-    let finalTemplate = statsTemplate;
+    let finalTemplate = '';
     for (const ability of this.pokemonData.abilities!) {
-      finalTemplate = finalTemplate.replace(`{name}`, ability.name);
-      finalTemplate = finalTemplate.replace(`{effect}`, ability.effect);
-      finalTemplate = finalTemplate.concat(this.template + '\n');
+      finalTemplate = finalTemplate.concat(statsTemplate + '\n');
+      finalTemplate = finalTemplate.replace(`{name}`, ability);
     }
-    return statsTemplate;
+    return finalTemplate;
   }
 
   private createStatsString(): string {
@@ -77,13 +75,13 @@ export default class PokemonComponent implements IComponent {
     <div> 
       {name}: {baseStat}
     </div>`;
-    let finalTemplate = statsTemplate;
+    let finalTemplate = '';
     for (const stat of this.pokemonData.stats!) {
+      finalTemplate = finalTemplate.concat(statsTemplate + '\n');
       finalTemplate = finalTemplate.replace(`{name}`, stat.name);
       finalTemplate = finalTemplate.replace(`{baseStat}`, stat.baseStat.toString());
-      finalTemplate = finalTemplate.concat(this.template + '\n');
     }
-    return statsTemplate;
+    return finalTemplate;
   }
 
   update(data: Pokemon): void {
