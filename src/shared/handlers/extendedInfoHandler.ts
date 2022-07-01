@@ -1,8 +1,9 @@
 import PageHandler from "./pageHandler";
 
 export default class extendedInfoHandler extends PageHandler {
-    constructor() {
+    constructor(id: number) {
         super();
+        this.fetchExtendedInfo(id);
     }
 
     /**
