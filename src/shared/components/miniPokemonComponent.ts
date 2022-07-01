@@ -5,7 +5,7 @@ import IComponent from "./IComponent";
  * This is a component meant to be used for the main Pokemons list.
  * Contains basic information about the Pokemons.
  */
-export default class PokemonListComponent implements IComponent {
+export default class MiniPokemonComponent implements IComponent {
     parentElement: HTMLElement;
     pokemonData: Pokemon;
     template: string;
@@ -13,7 +13,12 @@ export default class PokemonListComponent implements IComponent {
         this.parentElement = parentElement;
         this.pokemonData = pokemonData;
 
-        this.template = '';
+        this.template =
+            `<div class="pokemon-container" id="1">
+                <div class="pokemon-id">#{id}</div>
+            <div class="pokemon-name">{name}</div>
+                <img src="{img}"  class="pokemon-img">
+            </div>`;
     }
 
     render(): void {
@@ -22,5 +27,5 @@ export default class PokemonListComponent implements IComponent {
     update(data: Pokemon): void {
         this.pokemonData = data;
     }
-    
+
 }
