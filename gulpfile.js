@@ -29,7 +29,7 @@ gulp.task('scss', () => {
 
 // Transfers index
 gulp.task('index', () => {
-  return gulp.src(['./src/pages/*.html', './src/favicon.ico'])
+  return gulp.src(['./src/shared/pages/*.html', './src/favicon.ico'])
     .pipe(gulp.dest('./dist'));
 });
 
@@ -45,7 +45,7 @@ gulp.task('browser-sync', () => {
 
 // Browser Sync live reload
 gulp.task('browser-sync-watch', () => {
-  gulp.watch('./dist/styles.css').on('change', browserSync.reload);
+  gulp.watch('./dist/*.css').on('change', browserSync.reload);
   gulp.watch('./dist/app.js').on('change', browserSync.reload);
   gulp.watch('./dist/index.html').on('change', browserSync.reload);
 });
@@ -57,7 +57,7 @@ gulp.task('watch-scss', () => {
 
 // Watch html files
 gulp.task('watch-html', () => {
-  return gulp.watch('./src/pages/*.html', gulp.series('index'));
+  return gulp.watch('./src/shared/pages/*.html', gulp.series('index'));
 });
 
 // Watch tsc files
