@@ -87,6 +87,7 @@ header {
   display: inline-block;
   height: 80px;
   background-color: rgba(0, 110, 255, 0.2);
+  z-index: 1;
 
   #search-input {
     position: relative;
