@@ -11,12 +11,15 @@ export default class PokemonComponent implements IComponent {
   constructor(parentElement: HTMLElement, pokemonData: Pokemon) {
     this.parentElement = parentElement;
     this.pokemonData = pokemonData;
-    this.template = `<div class="pokemon-info" id="{id}">
+    this.template = `<div class="pokemon-info">
     <div class="pokemon-img-container">
       <img src="{pokemon-img}" class="pokemon-img" alt="Pokemon image">
     </div>
     <div class="inner-text-container">
-      <h3 style="border-bottom: 1px solid black;">{name}</h3>
+      <h3 style="border-bottom: 1px solid black;">{name}
+      <span class="pokemon-id">#{id}</span>
+      </h3>
+      <div style='display: flex;'> {types} </div>
       <div id="general-info-container">
         <div>
           <strong> Name: </strong> {name}
@@ -47,14 +50,31 @@ export default class PokemonComponent implements IComponent {
   render(): void {
     let finalTemplate = this.template;
     finalTemplate = finalTemplate.replace('{pokemon-img}', this.pokemonData.largeImg!);
+    finalTemplate = finalTemplate.replace('{id}', this.pokemonData.basicInfo.id);
     finalTemplate = finalTemplate.replace('{name}', this.pokemonData.basicInfo.name);
     finalTemplate = finalTemplate.replace('{name}', this.pokemonData.basicInfo.name);
     finalTemplate = finalTemplate.replace('{height}', this.pokemonData.height!);
     finalTemplate = finalTemplate.replace('{weight}', this.pokemonData.weight!);
+    finalTemplate = finalTemplate.replace('{types}', this.createTypesString());
     finalTemplate = finalTemplate.replace('{abilityComponent}', this.createAbilitiesString());
     finalTemplate = finalTemplate.replace('{statsComponent}', this.createStatsString());
     const element = htmlToElement(finalTemplate);
     this.parentElement.appendChild(element);
+  }
+
+  private createTypesString(): string {
+    const statsTemplate = `
+      <div class="{type} type"> 
+        {name}
+      </div>
+      `;
+    let finalTemplate = '';
+    for (const type of this.pokemonData.types!) {
+      finalTemplate = finalTemplate.concat(statsTemplate + '\n');
+      finalTemplate = finalTemplate.replace(`{name}`, type);
+      finalTemplate = finalTemplate.replace(`{type}`, type);
+    }
+    return finalTemplate;
   }
 
   private createAbilitiesString(): string {

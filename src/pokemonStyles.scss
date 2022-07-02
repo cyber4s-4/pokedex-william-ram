@@ -28,6 +28,7 @@ body {
 
   h3 {
     font-size: 200%;
+    margin-bottom: 5%;
   }
 }
 
@@ -51,12 +52,17 @@ body {
       overflow-y: scroll;
     }
 
+    .pokemon-id {
+      color: gray;
+    }
+
     #general-info-container {
       border-radius: 5px;
-      margin-top: 10%;
+      margin-top: 5%;
       width: 80%;
       padding: 5px;
       background-color: lightgray;
+
 
       div {
         margin: 5px;
@@ -65,7 +71,7 @@ body {
 
     #stats-container {
       border-radius: 5px;
-      margin-top: 10%;
+      margin-top: 7%;
       width: 80%;
       padding: 5px;
       background-color: lightgray;
@@ -73,7 +79,7 @@ body {
 
     #abilities-container {
       border-radius: 5px;
-      margin-top: 10%;
+      margin-top: 7%;
       width: 80%;
       padding: 5px;
       background-color: lightgray;
@@ -97,5 +103,88 @@ body {
     .pokemon-img {
       width: 100%;
     }
+  }
+
+  .type {
+    border-radius: 20px;
+    border: solid gray 1px;
+    padding: 7px;
+    width: 120px;
+    font-size: 20px;
+    margin: 10px;
+    color: black;
+    text-align: center;
+  }
+
+  .normal {
+    background-color: #a8a878;
+  }
+
+  .fighting {
+    background-color: #c03028;
+  }
+
+  .flying {
+    background-color: #a890f0;
+  }
+
+  .poison {
+    background-color: #a040a0;
+  }
+
+  .ground {
+    background-color: #e0c068;
+  }
+
+  .rock {
+    background-color: #b8a038;
+  }
+
+  .bug {
+    background-color: #a8b820;
+  }
+
+  .ghost {
+    background-color: #705898;
+  }
+
+  .steel {
+    background-color: #b8b8d0;
+  }
+
+  .fire {
+    background-color: #f08030;
+  }
+
+  .water {
+    background-color: #6890f0;
+  }
+
+  .grass {
+    background-color: #78c850;
+  }
+
+  .electric {
+    background-color: #f8d030;
+  }
+
+  .psychic {
+    background-color: #f85888;
+  }
+
+  .ice {
+    background-color: #98d8d8;
+  }
+
+  .dragon {
+    background-color: #7038f8;
+  }
+
+  .dark {
+    background-color: #705848;
+  }
+
+  .fairy {
+    background-color: #ee99ac;
   }
 }

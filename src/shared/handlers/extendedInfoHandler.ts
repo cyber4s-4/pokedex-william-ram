@@ -21,18 +21,22 @@ export default class extendedInfoHandler extends PageHandler {
             const pokemon = this.getPokemonById(id);
             pokemon.abilities = [];
             pokemon.stats = [];
+            pokemon.types = [];
             for (const abilityJSON of pokemonJSON['abilities']) {
                 pokemon.abilities.push(abilityJSON['ability']['name']);
             }
             for (const statJSON of pokemonJSON['stats']) {
                 pokemon.stats.push(new Stat(statJSON['stat']['name'], statJSON['base_stat']))
             }
-            pokemon.height = (Number(pokemonJSON['height'])/10).toString() + 'm';
-            pokemon.weight = (Number(pokemonJSON['weight'])/10).toString() + 'kg';     
+            for (const typeJSON of pokemonJSON['types']) {
+                pokemon.types.push(typeJSON['type']['name']);
+            }
+            pokemon.height = (Number(pokemonJSON['height']) / 10).toString() + 'm';
+            pokemon.weight = (Number(pokemonJSON['weight']) / 10).toString() + 'kg';
             console.log(pokemonJSON['sprites']['other']['official-artwork']['front_default']);
             if (pokemonJSON['sprites']['other']['official-artwork']['front_default'] !== null) {
                 pokemon.largeImg = pokemonJSON['sprites']['other']['official-artwork']['front_default'];
-            } 
+            }
             else pokemon.largeImg = pokemon.basicInfo.img;
 
             const pokemonComponent = new PokemonComponent(document.getElementById('container') as HTMLDivElement, pokemon);

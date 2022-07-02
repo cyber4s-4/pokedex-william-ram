@@ -5,7 +5,8 @@ export default class Pokemon {
         public abilities?: string[],
         public height?: string,
         public weight?: string,
-        public largeImg?: string
+        public largeImg?: string,
+        public types?: string[],
     ) { }
 }
 
@@ -13,7 +14,8 @@ export class BasicPokemonInfo {
     constructor(
         public id: string,
         public name: string,
-        public img: string) {
+        public img: string,
+        ) {
     }
 }
 
