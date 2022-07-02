@@ -18,8 +18,12 @@ export default class PageHandler {
             for (let i = 0; i < 898; i++) {
                 const pokemonImgLink = spriteLink.replace('{id}', (i + 1).toString());
                 const pokemon = pokemonsList['results'][i];
-                this.pokemonsStorage.push(new Pokemon(new BasicPokemonInfo((i + 1).toString(), pokemon['name'], pokemonImgLink)));
+                let pokemonName = pokemon['name'];
+                pokemonName = pokemonName.replace(pokemonName[0], pokemonName[0].toUpperCase());
+
+                this.pokemonsStorage.push(new Pokemon(new BasicPokemonInfo((i + 1).toString(), pokemonName, pokemonImgLink)));
             }
+            // Something is wrong with this line whenever it tries to save the data.
             localStorage.setItem('pokedex', JSON.stringify(this.pokemonsStorage));
         } else {
             this.pokemonsStorage = (JSON.parse(localStorage.getItem('pokedex') || '{}') as Pokemon[]);

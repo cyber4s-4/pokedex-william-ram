@@ -1,6 +1,6 @@
 import Pokemon from "../utils/pokemon";
 import IComponent from "./IComponent";
-import {htmlToElement} from "../utils/templateBuilder";
+import { htmlToElement } from "../utils/templateBuilder";
 
 /**
  * This is a component meant to be used for the main Pokemons list.
@@ -29,8 +29,8 @@ export default class MiniPokemonComponent implements IComponent {
         finalTemplate = finalTemplate.replace('{name}', this.pokemonData.basicInfo.name);
         finalTemplate = finalTemplate.replace('{img}', this.pokemonData.basicInfo.img);
         const element = htmlToElement(finalTemplate);
-        element.addEventListener('click', () =>{
-            window.location.href = "pokemon.html?id="+  this.pokemonData.basicInfo.id;
+        element.addEventListener('click', () => {
+            window.location.href = "pokemon.html?id=" + this.pokemonData.basicInfo.id;
         });
         this.parentElement.appendChild(element);
     }

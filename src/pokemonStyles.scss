@@ -1,14 +1,16 @@
-body{
-  background: rgb(238,174,202);
-  background: radial-gradient(circle, rgb(228, 196, 210) 0%, rgba(148,187,233,1) 100%);
+body {
+  background: rgb(238, 174, 202);
+  background: radial-gradient(circle, rgb(228, 196, 210) 0%, rgba(148, 187, 233, 1) 100%);
   display: flex;
   margin: 0;
+  height: 100vh;
   justify-content: center;
   flex-direction: column;
+  align-items: center;
   font-family: Georgia, "Times New Roman", Times, serif;
 }
 
-#background-img{
+#background-img {
   position: fixed;
   left: 0;
   right: 0;
@@ -19,17 +21,16 @@ body{
   width: 90vw;
 }
 
-#container{
-    margin: 50px;
-    align-self: center;
-    height: fit-content;
-    width: 50vw;
-    height: 70vh;
-    border-radius: 15px;
+#container {
+  margin: 50px;
+  height: fit-content;
+  width: 50vw;
+  height: 70vh;
+  border-radius: 15px;
 
-    h3{
-      font-size: 200%;
-    }
+  h3 {
+    font-size: 200%;
+  }
 }
 
 .pokemon-info {
@@ -48,30 +49,35 @@ body{
     width: 50%;
     padding: 2px 8px;
 
-    #general-info-container{
+    @media screen and (max-height: 800px) {
+      overflow-y: scroll;
+    }
+
+    #general-info-container {
       border-radius: 5px;
       margin-top: 10%;
       width: 80%;
-      padding : 5px;
+      padding: 5px;
       background-color: lightgray;
-      div{
-        margin:5px;
+
+      div {
+        margin: 5px;
       }
     }
 
-    #stats-container{
+    #stats-container {
       border-radius: 5px;
       margin-top: 10%;
       width: 80%;
-      padding : 5px;
+      padding: 5px;
       background-color: lightgray;
     }
 
-    #abilities-container{
+    #abilities-container {
       border-radius: 5px;
       margin-top: 10%;
       width: 80%;
-      padding : 5px;
+      padding: 5px;
       background-color: lightgray;
     }
 

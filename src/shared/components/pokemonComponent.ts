@@ -85,6 +85,6 @@ export default class PokemonComponent implements IComponent {
   }
 
   update(data: Pokemon): void {
-    throw new Error('Method not implemented.');
+    this.pokemonData = data;
   }
 }

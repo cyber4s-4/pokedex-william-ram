@@ -25,11 +25,11 @@ export default class extendedInfoHandler extends PageHandler {
                 pokemon.abilities.push(abilityJSON['ability']['name']);
             }
             for (const statJSON of pokemonJSON['stats']) {
-                pokemon.stats.push(new Stat(statJSON['stat']['name'] , statJSON['base_stat']))
+                pokemon.stats.push(new Stat(statJSON['stat']['name'], statJSON['base_stat']))
             }
             pokemon.height = pokemonJSON['height'];
             pokemon.weight = pokemonJSON['weight'];
-            const pokemonComponent = new PokemonComponent(document.getElementById('container') as HTMLDivElement , pokemon);
+            const pokemonComponent = new PokemonComponent(document.getElementById('container') as HTMLDivElement, pokemon);
             pokemonComponent.render();
             this.updateLocalStorage();
         } else {

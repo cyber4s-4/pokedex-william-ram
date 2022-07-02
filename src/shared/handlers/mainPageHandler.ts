@@ -19,4 +19,19 @@ export default class MainPage extends PageHandler {
         this.components.push(new MiniPokemonComponent(parentContainer, pokemonData));
     }
 
+    public handleSearchBar(e: Event): void {
+        const searchContent = (e.target as HTMLInputElement).value.trim();
+
+        if (searchContent === '') {
+            this.renderComponents(document.getElementById('container') as HTMLDivElement);
+        } else {
+            (document.getElementById('container') as HTMLDivElement).innerHTML = '';
+            this.pokemonsStorage.forEach((pokemonData, i) => {
+                if (pokemonData.basicInfo.name.toLowerCase().includes(searchContent.toLowerCase())) {
+                    this.components[i].render();
+                }
+            });
+        }
+    }
+
 }
