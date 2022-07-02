@@ -72,7 +72,7 @@ export default class PokemonComponent implements IComponent {
     for (const type of this.pokemonData.types!) {
       finalTemplate = finalTemplate.concat(statsTemplate + '\n');
       finalTemplate = finalTemplate.replace(`{name}`, type);
-      finalTemplate = finalTemplate.replace(`{type}`, type);
+      finalTemplate = finalTemplate.replace(`{type}`, type.toLowerCase());
     }
     return finalTemplate;
   }

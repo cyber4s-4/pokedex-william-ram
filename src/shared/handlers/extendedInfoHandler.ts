@@ -29,7 +29,8 @@ export default class extendedInfoHandler extends PageHandler {
                 pokemon.stats.push(new Stat(statJSON['stat']['name'], statJSON['base_stat']))
             }
             for (const typeJSON of pokemonJSON['types']) {
-                pokemon.types.push(typeJSON['type']['name']);
+                const typeWithCapital = typeJSON['type']['name'].replace(typeJSON['type']['name'][0], typeJSON['type']['name'][0].toUpperCase())
+                pokemon.types.push(typeWithCapital);
             }
             pokemon.height = (Number(pokemonJSON['height']) / 10).toString() + 'm';
             pokemon.weight = (Number(pokemonJSON['weight']) / 10).toString() + 'kg';
