@@ -44,7 +44,6 @@ gulp.task('browser-sync', () => {
   browserSync.init({
     browser: 'default',
     port: 4000,
-    host: '85.250.112.223',
     server: { baseDir: './dist' }
   });
 });

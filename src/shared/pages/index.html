@@ -7,16 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="indexStyles.css">
     <script src="app.js"></script>
-    <title>Document</title>
+    <title>BEST POKEDEX ON THE INTERNET</title>
 </head>
 
 <body>
-    <img src="../images/pokemon-png-18169.png" id="background-img">
-    <img src="../images/pikachu.png" id="pikachu-img">
+    <img src="../images/pokemon-png-18169.png" id="background-img" draggable="false">
+    <img src="../images/pikachu.png" id="pikachu-img" draggable="false">
     <header>
-        <input type="text" placeholder="Search" id="search-input">
+        <input type="text" placeholder="Search" id="search-input" maxlength="40">
+        <div id="not-found">
+            Pokemon not found...  &nbsp;&nbsp;)'=
+        </div>
     </header>
-
+    
     <div id="container"></div>
 </body>
 

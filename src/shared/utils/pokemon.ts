@@ -4,7 +4,8 @@ export default class Pokemon {
         public stats?: Stat[],
         public abilities?: string[],
         public height?: string,
-        public weight?: string
+        public weight?: string,
+        public largeImg?: string
     ) { }
 }
 
@@ -13,9 +14,6 @@ export class BasicPokemonInfo {
         public id: string,
         public name: string,
         public img: string) {
-        //Convert first letter of the name to upper case
-        this.name = this.name.charAt(0).toUpperCase() + this.name.slice(1);
-        console.log(this.name);
     }
 }
 

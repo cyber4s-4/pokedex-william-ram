@@ -25,6 +25,7 @@ export default class PageHandler {
             }
             // Something is wrong with this line whenever it tries to save the data.
             localStorage.setItem('pokedex', JSON.stringify(this.pokemonsStorage));
+            window.location.href = "index.html";
         } else {
             this.pokemonsStorage = (JSON.parse(localStorage.getItem('pokedex') || '{}') as Pokemon[]);
         }
