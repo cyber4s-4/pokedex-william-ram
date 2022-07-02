@@ -28,9 +28,10 @@ export default class extendedInfoHandler extends PageHandler {
                 pokemon.stats.push(new Stat(statJSON['stat']['name'], statJSON['base_stat']))
             }
             pokemon.height = (Number(pokemonJSON['height'])/10).toString() + 'm';
-            pokemon.weight = (Number(pokemonJSON['weight'])/10).toString() + 'kg';           
-            if (pokemonJSON['sprites']['other']['dream_world']['front_default'] !== null) {
-                pokemon.largeImg = pokemonJSON['sprites']['other']['dream_world']['front_default'];
+            pokemon.weight = (Number(pokemonJSON['weight'])/10).toString() + 'kg';     
+            console.log(pokemonJSON['sprites']['other']['official-artwork']['front_default']);
+            if (pokemonJSON['sprites']['other']['official-artwork']['front_default'] !== null) {
+                pokemon.largeImg = pokemonJSON['sprites']['other']['official-artwork']['front_default'];
             } 
             else pokemon.largeImg = pokemon.basicInfo.img;
 
