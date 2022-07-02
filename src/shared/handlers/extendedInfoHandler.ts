@@ -27,8 +27,13 @@ export default class extendedInfoHandler extends PageHandler {
             for (const statJSON of pokemonJSON['stats']) {
                 pokemon.stats.push(new Stat(statJSON['stat']['name'], statJSON['base_stat']))
             }
-            pokemon.height = pokemonJSON['height'];
-            pokemon.weight = pokemonJSON['weight'];
+            pokemon.height = (Number(pokemonJSON['height'])/10).toString() + 'm';
+            pokemon.weight = (Number(pokemonJSON['weight'])/10).toString() + 'kg';           
+            if (pokemonJSON['sprites']['other']['dream_world']['front_default'] !== null) {
+                pokemon.largeImg = pokemonJSON['sprites']['other']['dream_world']['front_default'];
+            } 
+            else pokemon.largeImg = pokemon.basicInfo.img;
+
             const pokemonComponent = new PokemonComponent(document.getElementById('container') as HTMLDivElement, pokemon);
             pokemonComponent.render();
             this.updateLocalStorage();
