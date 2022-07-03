@@ -1,4 +1,4 @@
-import extendedInfoHandler from "./shared/handlers/extendedInfoHandler";
+import ExtendedInfoHandler from "./shared/handlers/extendedInfoHandler";
 import MainPage from "./shared/handlers/mainPageHandler";
 
 
@@ -11,11 +11,11 @@ window.addEventListener('load', (e) => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('id')) {
       const id: string = urlParams.get('id')!;
-      const handler = new extendedInfoHandler(id);
+      const handler = new ExtendedInfoHandler(id);
     }
     else {
       window.location.href = "index.html";
     }
   }
-  
+
 });

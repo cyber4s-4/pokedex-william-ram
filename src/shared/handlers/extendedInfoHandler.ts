@@ -2,7 +2,7 @@ import PokemonComponent from "../components/pokemonComponent";
 import { Stat } from "../utils/pokemon";
 import PageHandler from "./pageHandler";
 
-export default class extendedInfoHandler extends PageHandler {
+export default class ExtendedInfoHandler extends PageHandler {
 
     constructor(id: string) {
         super();
