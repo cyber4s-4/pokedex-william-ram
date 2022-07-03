@@ -6,7 +6,7 @@ import { htmlToElement } from "../utils/templateBuilder";
  * This is a component meant to be used for the main Pokemons list.
  * Contains basic information about the Pokemons.
  */
-export default class MiniPokemonComponent implements IComponent {
+export default class basicPokemonComponent implements IComponent {
     parentElement: HTMLElement;
     pokemonData: Pokemon;
     template: string;

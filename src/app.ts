@@ -17,5 +17,5 @@ window.addEventListener('load', (e) => {
       window.location.href = "index.html";
     }
   }
-
+  
 });

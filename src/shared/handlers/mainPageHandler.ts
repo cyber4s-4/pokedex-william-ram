@@ -1,4 +1,4 @@
-import MiniPokemonComponent from "../components/miniPokemonComponent";
+import basicPokemonComponent from "../components/basicPokemonComponent";
 import Pokemon from "../utils/pokemon";
 import PageHandler from "./pageHandler";
 
@@ -16,7 +16,7 @@ export default class MainPage extends PageHandler {
         this.pokemonsStorage.forEach((pokemonData) => this.createComponent(pokemonListContainer, pokemonData));
     }
     private createComponent(parentContainer: HTMLDivElement, pokemonData: Pokemon) {
-        this.components.push(new MiniPokemonComponent(parentContainer, pokemonData));
+        this.components.push(new basicPokemonComponent(parentContainer, pokemonData));
     }
 
     public handleSearchBar(e: Event): void {
