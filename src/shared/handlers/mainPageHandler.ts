@@ -7,6 +7,7 @@ export default class MainPage extends PageHandler {
     constructor() {
         super();
         this.generateBasicPokemonList();
+        
         const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
         this.renderComponents(pokemonListContainer);
     }
