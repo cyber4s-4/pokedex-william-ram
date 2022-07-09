@@ -30,7 +30,7 @@ export default class basicPokemonComponent implements IComponent {
         finalTemplate = finalTemplate.replace('{img}', this.pokemonData.basicInfo.img);
         const element = htmlToElement(finalTemplate);
         element.addEventListener('click', () => {
-            window.location.href = "pokemon.html?id=" + this.pokemonData.basicInfo.id;
+            window.location.href = "pokemon/" + this.pokemonData.basicInfo.id;
         });
         this.parentElement.appendChild(element);
     }
