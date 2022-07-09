@@ -1,18 +1,19 @@
-import Pokemon from './pokemon';
-import BasicPokemonInfo from './pokemon';
+const pokemonFile = require('./pokemon');
+const Pokemon = pokemonFile.default;
+const BasicPokemonInfo =pokemonFile.BasicPokemonInfo;
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const pokemonsJson = [];
+let pokemonsJson = [];
 
 const portHttp = 4000;
 
 
-function fetchBasicPokemonData() {
+async function fetchBasicPokemonData() {
     const spriteLink = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png';
-    pokemonsJson = fs.readFileSync('./poekonsData.json').toJSON();
+    pokemonsJson = JSON.parse(fs.readFileSync('./pokemonsData.json').toString());
     if (pokemonsJson.length === 0) {
         const pokemonsList = (await(await fetch('https://pokeapi.co/api/v2/pokemon?limit=899&offset=0')).json());
         for (let i = 0; i < 898; i++) {
@@ -23,7 +24,7 @@ function fetchBasicPokemonData() {
 
             pokemonsJson.push(new Pokemon(new BasicPokemonInfo((i + 1).toString(), pokemonName, pokemonImgLink)));
         }
-        fs.writeFileSync('./poekonsData.json', JSON.stringify(pokemonsJson));
+        fs.writeFileSync('./pokemonsData.json', JSON.stringify(pokemonsJson));
     }
 }
 
@@ -31,7 +32,7 @@ function getPokemonById(id) {
     return pokemonsJson.find((pokemon) => pokemon.id === id);
 }
 
-function fetchExtendedInfoByID(id) {
+async function fetchExtendedInfoByID(id) {
     const pokemonJSON = (await(await fetch('https://pokeapi.co/api/v2/pokemon/' + id)).json());
     const pokemon = getPokemonById(id);
     pokemon.abilities = [];
@@ -54,7 +55,7 @@ function fetchExtendedInfoByID(id) {
     }
     else pokemon.largeImg = pokemon.basicInfo.img;
 
-    fs.writeFileSync('./pokeonsData.json', JSON.stringify(pokemonsJson));
+    fs.writeFileSync('./pokemonsData.json', JSON.stringify(pokemonsJson));
 }
 
 const app = express();

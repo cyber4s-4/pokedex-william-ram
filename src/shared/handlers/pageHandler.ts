@@ -9,10 +9,15 @@ export default class PageHandler {
         this.components = [];
         this.pokemonsStorage = [];
         this.fetchBasicPokemonData();
+        while(this.pokemonsStorage.length === 0) {
+            continue;
+        }
     }
 
     private async fetchBasicPokemonData() {
-        this.pokemonsStorage = await (await (fetch('http://localhost:4000/json'))).json();
+        this.pokemonsStorage = await (await (fetch('http://127.0.0.1:4000/json'))).json();
+        console.log(this.pokemonsStorage);
+               
     }
 
     protected updateLocalStorage(): void {

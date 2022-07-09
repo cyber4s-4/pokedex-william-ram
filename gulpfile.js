@@ -33,6 +33,10 @@ gulp.task('index', () => {
     .pipe(gulp.dest('./dist'));
 });
 
+gulp.task('transfer-server', () => {
+  return gulp.src(['./express.js', './pokemon.js', './pokemonsData.json']).pipe(gulp.dest('./dist'));
+});
+
 //Transfer Images
 gulp.task('images', () => {
   return gulp.src(['./src/shared/images/*.jpg', './src/shared/images/*.png'])
@@ -43,7 +47,7 @@ gulp.task('images', () => {
 gulp.task('browser-sync', () => {
   browserSync.init({
     browser: 'default',
-    port: 4000,
+    port: 4005,
     server: { baseDir: './dist' }
   });
 });
@@ -70,6 +74,12 @@ gulp.task('watch-tsc', () => {
   return gulp.watch('./dist/tsc/**/*.js', gulp.series('build'));
 });
 
+gulp.task('watch-server', () => {
+  gulp.watch('./express.js', gulp.series('transfer-server'));
+  gulp.watch('./pokemonsData.json', gulp.series('transfer-server'));
+  
+});
+
 // Initial ts compile
 gulp.task('tsc', cb => {
   exec('tsc', (err, msg) => {
@@ -89,6 +99,7 @@ gulp.task('default', gulp.series(
   'index',
   'tsc',
   'build',
+  'transfer-server',
   'images',
   gulp.parallel(
     'browser-sync',
@@ -97,5 +108,6 @@ gulp.task('default', gulp.series(
     'watch-html',
     'watch-tsc',
     'tsc-w',
+    'watch-server',
   ),
 ));
