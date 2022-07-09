@@ -8,9 +8,9 @@ window.addEventListener('load', (e) => {
     document.getElementById('search-input')?.addEventListener('input',(e) => handler.handleSearchBar(e))
   }
   else if (window.location.pathname === "/pokemon.html") {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('id')) {
-      const id: string = urlParams.get('id')!;
+    const urlParts = window.location.pathname.split('/');
+    if (Number.isInteger(urlParts[urlParts.length - 1]) === true) {
+      const id: string = urlParts[urlParts.length - 1];
       const handler = new ExtendedInfoHandler(id);
     }
     else {

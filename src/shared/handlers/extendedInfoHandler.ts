@@ -1,5 +1,5 @@
 import PokemonComponent from "../components/pokemonComponent";
-import { Stat } from "../utils/pokemon";
+import Pokemon, { Stat } from "../utils/pokemon";
 import PageHandler from "./pageHandler";
 
 export default class ExtendedInfoHandler extends PageHandler {
@@ -17,32 +17,10 @@ export default class ExtendedInfoHandler extends PageHandler {
 
     private async fetchExtendedInfo(id: string): Promise<void> {
         if (this.isPokemonBasicInfo(id)) {
-            const pokemonJSON = (await (await fetch('https://pokeapi.co/api/v2/pokemon/' + id)).json());
-            const pokemon = this.getPokemonById(id);
-            pokemon.abilities = [];
-            pokemon.stats = [];
-            pokemon.types = [];
-            for (const abilityJSON of pokemonJSON['abilities']) {
-                pokemon.abilities.push(abilityJSON['ability']['name']);
-            }
-            for (const statJSON of pokemonJSON['stats']) {
-                pokemon.stats.push(new Stat(statJSON['stat']['name'], statJSON['base_stat']))
-            }
-            for (const typeJSON of pokemonJSON['types']) {
-                const typeWithCapital = typeJSON['type']['name'].replace(typeJSON['type']['name'][0], typeJSON['type']['name'][0].toUpperCase())
-                pokemon.types.push(typeWithCapital);
-            }
-            pokemon.height = (Number(pokemonJSON['height']) / 10).toString() + 'm';
-            pokemon.weight = (Number(pokemonJSON['weight']) / 10).toString() + 'kg';
-            console.log(pokemonJSON['sprites']['other']['official-artwork']['front_default']);
-            if (pokemonJSON['sprites']['other']['official-artwork']['front_default'] !== null) {
-                pokemon.largeImg = pokemonJSON['sprites']['other']['official-artwork']['front_default'];
-            }
-            else pokemon.largeImg = pokemon.basicInfo.img;
+            let pokemon = this.getPokemonById(id);
+            const extendedPokemonData = await (await fetch(`http://locahost:4000/update/${id}`)).json() as Pokemon;
+            pokemon = extendedPokemonData;
 
-            const pokemonComponent = new PokemonComponent(document.getElementById('container') as HTMLDivElement, pokemon);
-            pokemonComponent.render();
-            this.updateLocalStorage();
         } else {
             const pokemon = this.getPokemonById(id);
             const pokemonComponent = new PokemonComponent(document.getElementById('container') as HTMLDivElement, pokemon);
