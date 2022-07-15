@@ -8,6 +8,7 @@ window.addEventListener('load', (e) => {
     const handler = new MainPage();
     document.getElementById('search-input')?.addEventListener('input',(e) => handler.handleSearchBar(e));
     window.addEventListener('scroll', (e) => handler.renderMore());
+    window.addEventListener('scroll', () => handler.renderSearch());
   }
   else if (window.location.pathname.includes("pokemon")) {
     const urlParts = window.location.pathname.split('/');

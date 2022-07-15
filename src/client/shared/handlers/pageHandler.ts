@@ -37,6 +37,9 @@ export default class PageHandler {
             this.components.forEach((component) => component.render());
         } else {
             for (let i = currentRenderedComponents; i! < currentRenderedComponents! + limiter; i!++) {
+                if(this.components[i!] === undefined) {
+                    break;
+                }
                 this.components[i!].render();
             }
         }

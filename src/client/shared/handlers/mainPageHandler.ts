@@ -6,15 +6,20 @@ export default class MainPage extends PageHandler {
 
     // Responsible for loading more pokemons.
     private currentRenderedComponents: number;
+
+    // Search related variables.
     private isSearchMode: boolean;
     private isCurrentlyLoading: boolean;
-    private renderedSearchElements: number; 
+    private renderedSearchElements: number;
+    private pokemonSearchIndexes: number[];
+
     constructor() {
         super();
         this.isCurrentlyLoading = false;
         this.currentRenderedComponents = 0;
         this.isSearchMode = false;
         this.renderedSearchElements = 0;
+        this.pokemonSearchIndexes = [];
         this.buildPage();
     }
 
@@ -22,14 +27,14 @@ export default class MainPage extends PageHandler {
         // Waits before generating any components.
         await this.pullDataFromServer();
         this.generateBasicPokemonList();
-        
+
         const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
         this.renderComponents(pokemonListContainer, false, this.currentRenderedComponents, 20);
         this.currentRenderedComponents += 20;
     }
 
     public renderMore(): void {
-        if(this.isSearchMode === true) {
+        if (this.isSearchMode === true) {
             return;
         }
         const amount = 20; // Edit this to control the amount of elements to render.
@@ -42,15 +47,13 @@ export default class MainPage extends PageHandler {
                 this.isCurrentlyLoading = false;
             }, 2000);
         }
-        console.log(this.isCurrentlyLoading);
-        
     }
 
     private generateBasicPokemonList(): void {
         const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
         this.pokemonsStorage.forEach((pokemonData) => this.createComponent(pokemonListContainer, pokemonData));
     }
-    
+
     private createComponent(parentContainer: HTMLDivElement, pokemonData: Pokemon) {
         this.components.push(new basicPokemonComponent(parentContainer, pokemonData));
     }
@@ -58,29 +61,53 @@ export default class MainPage extends PageHandler {
     public handleSearchBar(e: Event): void {
         (document.getElementById('not-found') as HTMLDivElement).style.visibility = 'hidden';
         const searchContent = (e.target as HTMLInputElement).value.trim();
-        let isEmpty:boolean = true;
         if (searchContent === '') {
             this.currentRenderedComponents = 0;
             this.isSearchMode = false;
-            window.removeEventListener('scroll', this.renderSearch);
             this.renderComponents(document.getElementById('container') as HTMLDivElement, true, this.currentRenderedComponents, 20);
+            this.currentRenderedComponents = 20;
         } else {
             this.isSearchMode = true;
-            window.addEventListener('scroll', () => this.renderSearch());
-            window.removeEventListener('scroll', this.renderMore);
             (document.getElementById('container') as HTMLDivElement).innerHTML = '';
+            this.pokemonSearchIndexes = [];
             this.pokemonsStorage.forEach((pokemonData, i) => {
                 if (pokemonData.basicInfo.name.toLowerCase().includes(searchContent.toLowerCase()) || pokemonData.basicInfo.id.includes(searchContent)) {
-                    this.components[i].render();
-                    isEmpty = false;
+                    this.pokemonSearchIndexes.push(i);
                 }
             });
-            if(isEmpty){
+            this.renderedSearchElements = 0;
+            for (let i = this.renderedSearchElements; i < this.renderedSearchElements + 20; i++) {
+                if(this.pokemonSearchIndexes[i] === undefined) {
+                    break;
+                }
+                this.components[this.pokemonSearchIndexes[i]].render();
+            }
+            this.renderedSearchElements += 20;
+            if (this.pokemonSearchIndexes.length === 0) {
                 (document.getElementById('not-found') as HTMLDivElement).style.visibility = 'visible';
+                return;
             }
         }
     }
-    private renderSearch() {
-        
+    public renderSearch() {
+        if (this.isSearchMode === false) {
+            return;
+        }
+        const amount = 20; // Edit this to control the amount of elements to render after the first render.
+        if (window.innerHeight + document.documentElement.scrollTop + 50 > document.scrollingElement!.scrollHeight && this.isCurrentlyLoading === false) {
+            this.isCurrentlyLoading = true;
+            window.setTimeout(() => {
+                for (let i = this.renderedSearchElements; i < this.renderedSearchElements + amount; i++) {
+                    if(this.pokemonSearchIndexes[i] === undefined) {
+                        break;
+                    }
+                    this.components[this.pokemonSearchIndexes[i]].render();
+                }
+                this.renderedSearchElements += amount;
+                this.isCurrentlyLoading = false;
+            }, 2000);
+        }
+
+
     }
 }
