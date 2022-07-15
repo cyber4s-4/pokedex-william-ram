@@ -8,6 +8,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { expressCspHeader, INLINE, NONE, SELF } = require('express-csp-header');
+const { time } = require('console');
 let pokemonsJson = [];
 
 const portHttp = 4000;
@@ -27,6 +28,7 @@ async function fetchBasicPokemonData() {
             pokemonsJson.push(new Pokemon(new BasicPokemonInfo((i + 1).toString(), pokemonName, pokemonImgLink)));
         }
         fs.writeFileSync('./pokemonsData.json', JSON.stringify(pokemonsJson));
+        fetchAllExtended();
     }
 }
 
@@ -38,6 +40,7 @@ function getPokemonById(id) {
 // and updates locally.
 async function fetchExtendedInfoByID(id) {
     const pokemonJSON = (await(await fetch('https://pokeapi.co/api/v2/pokemon/' + id)).json());
+    console.log(pokemonJSON);
     const pokemon = getPokemonById(id);
     pokemon.abilities = [];
     pokemon.stats = [];
@@ -52,14 +55,20 @@ async function fetchExtendedInfoByID(id) {
         const typeWithCapital = typeJSON['type']['name'].replace(typeJSON['type']['name'][0], typeJSON['type']['name'][0].toUpperCase())
         pokemon.types.push(typeWithCapital);
     }
-    pokemon.height = (Number(pokemonJSON['height']) / 10).toString() + 'm';
-    pokemon.weight = (Number(pokemonJSON['weight']) / 10).toString() + 'kg';
+    pokemon.height = (Number(pokemonJSON['height']) / 10).toString();
+    pokemon.weight = (Number(pokemonJSON['weight']) / 10).toString();
     if (pokemonJSON['sprites']['other']['official-artwork']['front_default'] !== null) {
         pokemon.largeImg = pokemonJSON['sprites']['other']['official-artwork']['front_default'];
     }
     else pokemon.largeImg = pokemon.basicInfo.img;
 
     fs.writeFileSync('./pokemonsData.json', JSON.stringify(pokemonsJson));
+}
+
+async function fetchAllExtended(){
+    for(let i = 1; i < pokemonsJson.length+1; i++) {
+        fetchExtendedInfoByID(i);
+    }
 }
 
 const app = express();

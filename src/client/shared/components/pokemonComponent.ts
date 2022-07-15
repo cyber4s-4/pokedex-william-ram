@@ -25,10 +25,10 @@ export default class PokemonComponent implements IComponent {
           <strong> Name: </strong> {name}
         </div>
         <div>
-          <strong> Height: </strong> {height}
+          <strong> Height: </strong> {height} m
         </div>
         <div>
-          <strong> Weight: </strong> {weight}
+          <strong> Weight: </strong> {weight} kg
         </div>
       </div>
       <div id="abilities-container">

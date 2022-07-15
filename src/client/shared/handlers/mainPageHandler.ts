@@ -45,7 +45,7 @@ export default class MainPage extends PageHandler {
                 this.renderComponents(pokemonListContainer, false, this.currentRenderedComponents, amount);
                 this.currentRenderedComponents += amount;
                 this.isCurrentlyLoading = false;
-            }, 2000);
+            }, 500);
         }
     }
 
@@ -105,7 +105,7 @@ export default class MainPage extends PageHandler {
                 }
                 this.renderedSearchElements += amount;
                 this.isCurrentlyLoading = false;
-            }, 2000);
+            }, 500);
         }
 
 
