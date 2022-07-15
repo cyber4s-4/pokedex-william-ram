@@ -1,5 +1,5 @@
-import ExtendedInfoHandler from "./shared/handlers/extendedInfoHandler";
-import MainPage from "./shared/handlers/mainPageHandler";
+import ExtendedInfoHandler from "./handlers/extendedInfoHandler";
+import MainPage from "./handlers/mainPageHandler";
 
 
 window.addEventListener('load', (e) => {

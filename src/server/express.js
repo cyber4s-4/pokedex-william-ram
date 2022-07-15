@@ -3,10 +3,11 @@ const Pokemon = pokemonFile.default;
 const BasicPokemonInfo = pokemonFile.BasicPokemonInfo;
 const Stat = pokemonFile.Stat;
 const fs = require('fs');
-const path = require('path');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const { expressCspHeader, INLINE, NONE, SELF } = require('express-csp-header');
 let pokemonsJson = [];
 
 const portHttp = 4000;
@@ -65,6 +66,13 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+app.use(expressCspHeader({
+    policies: {
+        'default-src': [expressCspHeader.NONE],
+        'img-src': [expressCspHeader.SELF],
+    }
+}));
+
 const root = path.join(process.cwd(), 'dist');
 
 app.get("/json", (req, res) => {
@@ -81,11 +89,12 @@ app.use(express.static(root), (req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(root, 'index.html'));
+    console.log(root);
+    res.sendFile(path.join(root, './index.html'));
 });
 
 app.get('/pokemon/:id', (req, res) => {
-    res.sendFile(path.join(root, 'pokemon.html'));
+    res.sendFile(path.join(root, './pokemon.html'));
 })
 
 app.listen(portHttp, () => {

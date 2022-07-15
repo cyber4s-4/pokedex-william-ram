@@ -22,25 +22,26 @@ gulp.task('build', () => {
 
 // Converts scss to css
 gulp.task('scss', () => {
-  return gulp.src('./src/**/*.scss')
+  return gulp.src('./src/server/public/styles/*.scss')
     .pipe(sass())
     .pipe(gulp.dest('./dist'));
 });
 
 // Transfers index
 gulp.task('index', () => {
-  return gulp.src(['./src/shared/pages/*.html', './src/favicon.ico'])
+  return gulp.src(['./src/server/public/pages/*.html', './src/server/public/pages/favicon.ico'])
     .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('transfer-server', () => {
-  return gulp.src(['./express.js', './pokemon.js', './pokemonsData.json']).pipe(gulp.dest('./dist'));
+  return gulp.src(['./src/server/express.js', './src/server/pokemon.js', './src/server/pokemonsData.json'])
+  .pipe(gulp.dest('./dist'));
 });
 
 //Transfer Images
 gulp.task('images', () => {
-  return gulp.src(['./src/shared/images/*.jpg', './src/shared/images/*.png'])
-    .pipe(gulp.dest('./dist/images'));
+  return gulp.src(['./src/server/public/images/*.jpg', './src/server/public/images/*.png'])
+    .pipe(gulp.dest('./dist'));
 });
 
 // Browser Sync
@@ -61,12 +62,12 @@ gulp.task('browser-sync-watch', () => {
 
 // Watch scss files
 gulp.task('watch-scss', () => {
-  return gulp.watch('./src/**/*.scss', gulp.series('scss'));
+  return gulp.watch('./src/server/public/styles/*.scss', gulp.series('scss'));
 });
 
 // Watch html files
 gulp.task('watch-html', () => {
-  return gulp.watch('./src/shared/pages/*.html', gulp.series('index'));
+  return gulp.watch('./src/server/public/pages/*.html', gulp.series('index'));
 });
 
 // Watch tsc files
@@ -75,8 +76,8 @@ gulp.task('watch-tsc', () => {
 });
 
 gulp.task('watch-server', () => {
-  gulp.watch('./express.js', gulp.series('transfer-server'));
-  gulp.watch('./pokemonsData.json', gulp.series('transfer-server'));
+  gulp.watch('./src/server/express.js', gulp.series('transfer-server'));
+  gulp.watch('./src/server/pokemonsData.json', gulp.series('transfer-server'));
   
 });
 
