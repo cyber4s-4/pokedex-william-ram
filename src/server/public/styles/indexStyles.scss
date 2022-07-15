@@ -80,6 +80,25 @@ body {
   }
 }
 
+#loading-icon {
+  position: relative;
+  bottom: 0;
+  width: 35px;
+  height: 35px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  animation: rotation 4s linear infinite;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
 header {
   top: 0%;
   width: 100%;

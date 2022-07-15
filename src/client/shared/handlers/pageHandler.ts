@@ -5,13 +5,16 @@ export default class PageHandler {
     // An array of components that are built inside extending class pages.
     protected components: IComponent[];
     protected pokemonsStorage: Pokemon[];
+
+
     constructor() {
         this.components = [];
         this.pokemonsStorage = [];
+
     }
 
     protected async pullDataFromServer() {
-        this.pokemonsStorage = await (await fetch('http://127.0.0.1:4000/json')).json(); 
+        this.pokemonsStorage = await (await fetch('http://127.0.0.1:4000/json')).json();
     }
 
     protected updateLocalStorage(): void {
@@ -26,8 +29,16 @@ export default class PageHandler {
         return this.getPokemonById(id).abilities === undefined;
     }
 
-    protected renderComponents(parentElement: HTMLElement): void {
-        parentElement.innerHTML = '';
-        this.components.forEach((component) => component.render());
+    protected renderComponents(parentElement: HTMLElement, resetParent: boolean, currentRenderedComponents?: number, limiter?: number): void {
+        if (resetParent === true) {
+            parentElement.innerHTML = '';
+        }
+        if (limiter === undefined) {
+            this.components.forEach((component) => component.render());
+        } else {
+            for (let i = currentRenderedComponents; i! < currentRenderedComponents! + limiter; i!++) {
+                this.components[i!].render();
+            }
+        }
     }
 }
