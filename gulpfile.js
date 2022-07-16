@@ -34,7 +34,7 @@ gulp.task('index', () => {
 });
 
 gulp.task('transfer-server', () => {
-  return gulp.src(['./src/server/express.js', './src/server/pokemon.js', './src/server/pokemonsData.json'])
+  return gulp.src(['./dist/tsc/server/express.js', './dist/tsc/server/pokemon.js', './src/server/pokemonsData.json'])
   .pipe(gulp.dest('./dist'));
 });
 
@@ -76,7 +76,7 @@ gulp.task('watch-tsc', () => {
 });
 
 gulp.task('watch-server', () => {
-  gulp.watch('./src/server/express.js', gulp.series('transfer-server'));
+  gulp.watch('./dist/tsc/server/express.js', gulp.series('transfer-server'));
   gulp.watch('./src/server/pokemonsData.json', gulp.series('transfer-server'));
   
 });
