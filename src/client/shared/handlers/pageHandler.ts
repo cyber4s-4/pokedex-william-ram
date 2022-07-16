@@ -13,10 +13,6 @@ export default class PageHandler {
 
     }
 
-    protected async pullDataFromServer() {
-        this.pokemonsStorage = await (await fetch('http://127.0.0.1:4000/json')).json();
-    }
-
     protected updateLocalStorage(): void {
         localStorage.setItem('pokedex', JSON.stringify(this.pokemonsStorage));
     }

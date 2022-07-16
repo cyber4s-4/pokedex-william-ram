@@ -25,8 +25,9 @@ export default class MainPage extends PageHandler {
 
     private async buildPage(): Promise<void> {
         // Waits before generating any components.
-        await this.pullDataFromServer();
+        this.pokemonsStorage = (await (await fetch(`http://127.0.0.1:4000/json?limit=10000&offset=${this.pokemonsStorage.length}`)).json())['data'];
         this.generateBasicPokemonList();
+        this.pullDataFromServer();
 
         const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
         this.renderComponents(pokemonListContainer, false, this.currentRenderedComponents, 20);
@@ -49,9 +50,24 @@ export default class MainPage extends PageHandler {
         }
     }
 
+    private async pullDataFromServer() {
+        let response;
+        do {
+            response = (await (await fetch(`http://127.0.0.1:4000/json?limit=10000&offset=${this.pokemonsStorage.length}`)).json());     
+            if (response['isDone'] === true) {
+                break;
+            }
+            this.pokemonsStorage = this.pokemonsStorage.concat(response['data']);
+            this.generateBasicPokemonList();
+        }while(response['isDone'] !== true)
+        
+    }
+
     private generateBasicPokemonList(): void {
         const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
-        this.pokemonsStorage.forEach((pokemonData) => this.createComponent(pokemonListContainer, pokemonData));
+        for (let i = this.components.length; i < this.pokemonsStorage.length; i++) {
+            this.createComponent(pokemonListContainer, this.pokemonsStorage[i]);
+        }
     }
 
     private createComponent(parentContainer: HTMLDivElement, pokemonData: Pokemon) {
@@ -72,9 +88,10 @@ export default class MainPage extends PageHandler {
             this.pokemonSearchIndexes = [];
             this.pokemonsStorage.forEach((pokemonData, i) => {
                 if (pokemonData.basicInfo.name.toLowerCase().includes(searchContent.toLowerCase()) || pokemonData.basicInfo.id.includes(searchContent)) {
-                    this.pokemonSearchIndexes.push(i);
+                    this.pokemonSearchIndexes.push(i);                    
                 }
             });
+            
             this.renderedSearchElements = 0;
             for (let i = this.renderedSearchElements; i < this.renderedSearchElements + 20; i++) {
                 if(this.pokemonSearchIndexes[i] === undefined) {

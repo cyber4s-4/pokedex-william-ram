@@ -9,7 +9,7 @@ export default class ExtendedInfoHandler extends PageHandler {
     }
 
     private async buildPage(id: string): Promise<void> {  
-        await this.pullDataFromServer();
+        // await this.pullDataFromServer();
         await this.fetchExtendedInfo(id);
     }
 
@@ -18,17 +18,12 @@ export default class ExtendedInfoHandler extends PageHandler {
      * and renders the pokemon component.
      * @param id The ID of the pokemon we want to update
      */
-    private async fetchExtendedInfo(id: string): Promise<void> {
-        if (this.getPokemonById(id)) {
-            let pokemon = this.getPokemonById(id);
-            
-            if (this.isPokemonBasicInfo(id)) {
-                this.pokemonsStorage = (await (await fetch(`http://127.0.0.1:4000/update/${id}`)).json());
-                pokemon = this.getPokemonById(id);
-            }
+    private async fetchExtendedInfo(id: string): Promise<void> {   
+        let pokemon = (await (await fetch(`http://127.0.0.1:4000/getPokemon/${id}`)).json());
+        if (pokemon.basicInfo.id !== '-1') {
             const pokemonComponent = new PokemonComponent(document.getElementById('container') as HTMLDivElement, pokemon);
             pokemonComponent.render();
         }
-        else window.location.href = "http://locahost:4000/";
+        else window.location.href = "http://127.0.0.1:4000/";
     }
 }

@@ -34,7 +34,7 @@ gulp.task('index', () => {
 });
 
 gulp.task('transfer-server', () => {
-  return gulp.src(['./dist/tsc/server/express.js', './dist/tsc/server/pokemon.js'])
+  return gulp.src(['./dist/tsc/server/*.js',])
   .pipe(gulp.dest('./dist'));
 });
 
@@ -76,9 +76,14 @@ gulp.task('watch-tsc', () => {
 });
 
 gulp.task('watch-server', () => {
+  gulp.watch('./dist/tsc/server/mongo.js', gulp.series('transfer-server'));
   gulp.watch('./dist/tsc/server/express.js', gulp.series('transfer-server'));
-  gulp.watch('./src/server/pokemonsData.json', gulp.series('transfer-server'));
+  gulp.watch('./src/server/pokemonsData.json', gulp.series('transfer-data'));
   
+});
+
+gulp.task('transfer-data', ()=> {
+  gulp.src('./src/server/pokemonsData.json').pipe(gulp.dest('./dist'));
 });
 
 // Initial ts compile
