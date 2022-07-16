@@ -34,7 +34,7 @@ gulp.task('index', () => {
 });
 
 gulp.task('transfer-server', () => {
-  return gulp.src(['./dist/tsc/server/express.js', './dist/tsc/server/pokemon.js', './src/server/pokemonsData.json'])
+  return gulp.src(['./dist/tsc/server/express.js', './dist/tsc/server/pokemon.js'])
   .pipe(gulp.dest('./dist'));
 });
 

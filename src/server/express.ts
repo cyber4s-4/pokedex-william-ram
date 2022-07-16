@@ -14,11 +14,11 @@ const portHttp = 4000;
 // Fetches a basic info from pokeapi and adds to the pokemonsData.json.
 async function fetchBasicPokemonData() {
     const spriteLink = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png';
-    fs.writeFileSync(__dirname + '/pokemonsData.json', '[]');
     pokemonsJson = JSON.parse(fs.readFileSync(__dirname + '/pokemonsData.json').toString());
     console.log(pokemonsJson.length);
     
     if (pokemonsJson.length === 0) {
+        fs.writeFileSync(__dirname + '/pokemonsData.json', '[]');
         const pokemonsList = (await (await fetch('https://pokeapi.co/api/v2/pokemon?limit=899&offset=0')).json()) as any;
         for (let i = 0; i < 898; i++) {
             const pokemonImgLink = spriteLink.replace('{id}', (i + 1).toString());
@@ -40,7 +40,6 @@ function getPokemonById(id: string) {
 // and updates locally.
 async function fetchExtendedInfoByID(id: string) {
     const pokemonJSON = (await (await fetch('https://pokeapi.co/api/v2/pokemon/' + id)).json()) as any;
-    console.log(pokemonJSON);
     const pokemon = getPokemonById(id)!;
     pokemon.abilities = [];
     pokemon.stats = [];
