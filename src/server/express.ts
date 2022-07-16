@@ -9,16 +9,21 @@ import express = require('express');
 
 let pokemonsJson: Pokemon[] = [];
 
+const app: Express = express();
+const root = path.join(process.cwd(), 'dist');
 const portHttp = 4000;
 
 // Fetches a basic info from pokeapi and adds to the pokemonsData.json.
 async function fetchBasicPokemonData() {
     const spriteLink = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png';
-    pokemonsJson = JSON.parse(fs.readFileSync(__dirname + '/pokemonsData.json').toString());
+    if (fs.existsSync(path.join(__dirname, '/pokemonsData.json'))) {
+        pokemonsJson = JSON.parse(fs.readFileSync(path.join(__dirname, '/pokemonsData.json')).toString());
+    } else {
+        fs.writeFileSync(path.join(__dirname, '/pokemonsData.json'), '[]');
+    }
     console.log(pokemonsJson.length);
-    
+
     if (pokemonsJson.length === 0) {
-        fs.writeFileSync(__dirname + '/pokemonsData.json', '[]');
         const pokemonsList = (await (await fetch('https://pokeapi.co/api/v2/pokemon?limit=899&offset=0')).json()) as any;
         for (let i = 0; i < 898; i++) {
             const pokemonImgLink = spriteLink.replace('{id}', (i + 1).toString());
@@ -27,7 +32,7 @@ async function fetchBasicPokemonData() {
             pokemonName = pokemonName.replace(pokemonName[0], pokemonName[0].toUpperCase());
             pokemonsJson.push(new Pokemon(new BasicPokemonInfo((i + 1).toString(), pokemonName, pokemonImgLink)));
         }
-        fs.writeFileSync(__dirname + '/pokemonsData.json', JSON.stringify(pokemonsJson));
+        fs.writeFileSync(path.join(__dirname, '/pokemonsData.json'), JSON.stringify(pokemonsJson));
         fetchAllExtended();
     }
 }
@@ -61,7 +66,7 @@ async function fetchExtendedInfoByID(id: string) {
     }
     else pokemon.largeImg = pokemon.basicInfo.img;
 
-    fs.writeFileSync(__dirname + '/pokemonsData.json', JSON.stringify(pokemonsJson));
+    fs.writeFileSync(path.join(__dirname, '/pokemonsData.json'), JSON.stringify(pokemonsJson));
 }
 
 async function fetchAllExtended() {
@@ -70,11 +75,9 @@ async function fetchAllExtended() {
     }
 }
 
-const app: Express = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const root = path.join(process.cwd(), 'dist');
 
 app.get("/json", (req, res) => {
     res.json(pokemonsJson);
@@ -100,6 +103,6 @@ app.get('/pokemon/:id', (req, res) => {
 
 app.listen(portHttp, () => {
     fetchBasicPokemonData();
-    console.log(__dirname);
+    console.log(path.join(__dirname, '/pokemonsData.json'));
     console.log('Hosted: http://localhost:' + portHttp);
 });
