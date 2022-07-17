@@ -5,7 +5,6 @@
 npm install
 npm start
 ```
-* Drag the pokemonsData.json from ./src/server into ./dist
-* Note: If you won't do that the server will create one at the dist folder and each reload of the server will fetch a new file into the dist folder from mongodb.
+* Note a pokemonsData.json will be created during server startup inside the dist directory. You can drag it into src/server directory to prevent recreating the file whenever you reload the gulp file.
     node ./dist/express.js
 * Enter to the express web page which is http://localhost:4000/
