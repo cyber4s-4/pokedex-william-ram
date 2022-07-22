@@ -6,7 +6,6 @@ import * as path from "path";
 import { Express } from "express";
 import * as PokemonDb from "./mongo";
 import express = require("express");
-import { Collection, MongoClient } from "mongodb";
 import { fetchExtendedInfoByID, fetchAllExtended } from "./fetch";
 import { Client } from "pg";
 declare global {
@@ -14,16 +13,15 @@ declare global {
 }
 globalThis.pokemonsJson = [];
 
-let pokemonCollection: Collection;
 const app: Express = express();
 const root = path.join(process.cwd(), "dist");
 const portHttp = 4000;
 
-async function downloadJSON() {
+async function downloadJSON(client: Client) {
     if (!fs.existsSync(path.join(__dirname, "/pokemonsData.json"))) {
         console.log("Reading from atlas");
 
-        pokemonsJson = await PokemonDb.getPokemonsFromAtlas(pokemonCollection);
+        await PokemonDb.getPokemonsFromAtlas(client);
         fs.writeFileSync(
             path.join(__dirname, "/pokemonsData.json"),
             JSON.stringify(pokemonsJson)
@@ -90,9 +88,9 @@ app.get("/getPokemon/:id", (req, res) => {
 });
 
 app.listen(portHttp, async () => {
-    let db: Client = PokemonDb.create();
-    await PokemonDb.connect(db);
-    await downloadJSON();
+    let client: Client = await PokemonDb.create();
+    await PokemonDb.connect(client);
+    await downloadJSON(client);
     console.log("Hosted: http://localhost:" + portHttp);
 });
 
