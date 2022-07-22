@@ -4,10 +4,9 @@ import * as cors from "cors";
 import * as bodyParser from "body-parser";
 import * as path from "path";
 import { Express } from "express";
-import * as PokemonDb from "./mongo";
+import PokeDB from "./mongo";
 import express = require("express");
 import { fetchExtendedInfoByID, fetchAllExtended } from "./fetch";
-import { Client } from "pg";
 declare global {
     var pokemonsJson: Pokemon[];
 }
@@ -15,13 +14,13 @@ globalThis.pokemonsJson = [];
 
 const app: Express = express();
 const root = path.join(process.cwd(), "dist");
-const portHttp = 4000;
+const portHttp = process.env.PORT || 4000;
 
-async function downloadJSON(client: Client) {
-    if (!fs.existsSync(path.join(__dirname, "/pokemonsData.json"))) {
-        console.log("Reading from atlas");
-
-        await PokemonDb.getPokemonsFromAtlas(client);
+async function downloadJSON(db: PokeDB) {
+    if (fs.existsSync(path.join(__dirname, "/pokemonsData.json")) === false) {
+        console.log("Reading from DB");
+        // await fetchAllExtended();
+        pokemonsJson = await db.getPokemonsFromDb();
         fs.writeFileSync(
             path.join(__dirname, "/pokemonsData.json"),
             JSON.stringify(pokemonsJson)
@@ -30,6 +29,7 @@ async function downloadJSON(client: Client) {
         pokemonsJson = JSON.parse(
             fs.readFileSync(path.join(__dirname, "/pokemonsData.json")).toString()
         ) as Pokemon[];
+        await db.insertData(pokemonsJson);
     }
 }
 
@@ -88,9 +88,9 @@ app.get("/getPokemon/:id", (req, res) => {
 });
 
 app.listen(portHttp, async () => {
-    let client: Client = await PokemonDb.create();
-    await PokemonDb.connect(client);
-    await downloadJSON(client);
+    let db: PokeDB = new PokeDB();
+    // await db.connect();
+    await downloadJSON(db);
     console.log("Hosted: http://localhost:" + portHttp);
 });
 
