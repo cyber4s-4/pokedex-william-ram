@@ -1,29 +1,52 @@
 import { MongoClient, Db, Collection/*, WithId*/ } from 'mongodb';
 import { BasicPokemonInfo, Stat, Pokemon } from './pokemon';
+import { Client } from 'pg';
 
-
-export function create() {
-    // TODO - Replace with your own mongo url
-    const uri = "mongodb+srv://ram1660:5zQncu8kz307VbvU@cluster0.llfosrp.mongodb.net/?retryWrites=true&w=majority";
-    const client = new MongoClient(uri);
+/**
+ * Creates a client object
+ * @returns The client object
+ */
+export async function create() {
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
     return client;
 }
 
-export async function connect(client: MongoClient) {
+/**
+ * Connects to the database and creates the table if needed.
+ * @param client 
+ * @returns 
+ */
+export async function connect(client: Client) {
     await client.connect();
-    const db: Db = client.db('pokemonAPI');
-    const collection: Collection = db.collection('pokemons');
-    return collection;
+    let query: string;
+    query = `CREATE TABLE IF NOT EXISTS agents (
+        id	SERIAL UNIQUE,
+        name	VARCHAR(255) NOT NULL,
+        img	VARCHAR(255) NOT NULL,
+        name	VARCHAR(255),
+        baseStat	VARCHAR(255),
+        height	VARCHAR(255),
+        weight	VARCHAR(255),
+        largeImg	VARCHAR(255),
+        types	VARCHAR(255),
+          PRIMARY KEY(id)
+        );`
+    await client.query(query);
 }
 
-export async function createMergedPokemons(pokemonsToMergeArray: Pokemon[], collection: Collection):Promise<Pokemon[]> {
-    const length  = pokemonsToMergeArray.length;  
+export async function createMergedPokemons(pokemonsToMergeArray: Pokemon[], collection: Collection): Promise<Pokemon[]> {
+    const length = pokemonsToMergeArray.length;
     let mergedPokemonsArray = [];
     let count = await collection.count({});
     for (let i = 0; i < length; i++) {
         for (let j = 0; j < length; j++) {
             if (i != j) {
-                const mergedPokemon = (mergePokemons(pokemonsToMergeArray[i], pokemonsToMergeArray[j],count));
+                const mergedPokemon = (mergePokemons(pokemonsToMergeArray[i], pokemonsToMergeArray[j], count));
                 mergedPokemonsArray.push(mergedPokemon);
                 count++;
             }
@@ -32,7 +55,7 @@ export async function createMergedPokemons(pokemonsToMergeArray: Pokemon[], coll
     return mergedPokemonsArray;
 }
 
-function mergePokemons(pokemon1: Pokemon, pokemon2: Pokemon, count : number):Pokemon {
+function mergePokemons(pokemon1: Pokemon, pokemon2: Pokemon, count: number): Pokemon {
     const name: string = pokemon1.basicInfo.name + '|' + pokemon2.basicInfo.name;
     const id: string = (count + 1).toString();
     const img: string = `https://raw.githubusercontent.com/Aegide/autogen-fusion-sprites/master/Battlers/${pokemon1.basicInfo.id}/${pokemon1.basicInfo.id}.${pokemon2.basicInfo.id}.png`;

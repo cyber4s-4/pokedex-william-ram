@@ -8,6 +8,7 @@ import * as PokemonDb from "./mongo";
 import express = require("express");
 import { Collection, MongoClient } from "mongodb";
 import { fetchExtendedInfoByID, fetchAllExtended } from "./fetch";
+import { Client } from "pg";
 declare global {
     var pokemonsJson: Pokemon[];
 }
@@ -89,8 +90,8 @@ app.get("/getPokemon/:id", (req, res) => {
 });
 
 app.listen(portHttp, async () => {
-    let db: MongoClient = PokemonDb.create();
-    pokemonCollection = await PokemonDb.connect(db);
+    let db: Client = PokemonDb.create();
+    await PokemonDb.connect(db);
     await downloadJSON();
     console.log("Hosted: http://localhost:" + portHttp);
 });
