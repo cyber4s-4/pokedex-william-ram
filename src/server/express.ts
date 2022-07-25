@@ -10,7 +10,7 @@ import express = require("express");
 const app: Express = express();
 const root = path.join(process.cwd(), "dist");
 const portHttp = process.env.PORT || 4000;
-let db: PokeDB;
+let db: PokeDB = new PokeDB();
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -47,6 +47,7 @@ app.get("/pokemon/:id", (req, res) => {
 
 app.get("/getPokemon/:id", async (req, res) => {
     console.log("Sending client pokemon " + req.params["id"] + " json");
+    console.log(db);
     const pokemon = (await db.getPokemonsFromDb(req.params["id"]))[0];
     if (pokemon !== undefined) {
         res.json(pokemon);
@@ -57,7 +58,6 @@ app.get("/getPokemon/:id", async (req, res) => {
 });
 
 app.listen(portHttp, async () => {
-     db = new PokeDB();
     // await db.connect();
     console.log("Hosted: http://localhost:" + portHttp);
 });

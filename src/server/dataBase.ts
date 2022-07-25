@@ -16,11 +16,12 @@ export default class PokeDB {
     private async create(): Promise<void> {
         this.client = new Client({
             connectionString:
-            process.env.DATABASE_URL,
+            'postgres://hhdyfrtcydaofk:1d38bbc5fb21fadac56e49d303e2a297febd2076112ba61063aa173b73c02145@ec2-34-235-31-124.compute-1.amazonaws.com:5432/deb63rabfhna07',
             ssl: {
                 rejectUnauthorized: false,
             },
         });
+        console.log("connected to db");
     }
 
     /**
@@ -73,7 +74,7 @@ export default class PokeDB {
     }
 
     public async getPokemonsFromDb(minIndex:string, maxIndex:string = minIndex): Promise<Pokemon[]> {
-        const query: string = `SELECT * FROM Products WHERE id BETWEEN ${minIndex} AND ${maxIndex};`;
+        const query: string = `SELECT * FROM pokemons WHERE id BETWEEN ${minIndex} AND ${maxIndex};`;
         const pokemonsArray: Pokemon[] = [];
         const results = (await this.client!.query(query)).rows;
         console.log(results);
