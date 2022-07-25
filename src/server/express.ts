@@ -21,7 +21,6 @@ app.get("/json", async (req, res) => {
         const limit = req.query["limit"];
         const offset = req.query["offset"];
         let isDone = false;
-        console.log(1);
         const limitedJSON = await db.getPokemonsFromDb(String(limit) , String(offset));
         if(limitedJSON.length < Number(limit))
             isDone = true;
@@ -48,7 +47,7 @@ app.get("/pokemon/:id", (req, res) => {
 
 app.get("/getPokemon/:id", async (req, res) => {
     console.log("Sending client pokemon " + req.params["id"] + " json");
-    const pokemon = (await db.getPokemonsFromDb(req.params["id"] ,req.params["id"]))[0];
+    const pokemon = (await db.getPokemonsFromDb(req.params["id"]))[0];
     if (pokemon !== undefined) {
         res.json(pokemon);
     } else {

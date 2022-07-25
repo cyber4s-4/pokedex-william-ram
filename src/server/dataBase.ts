@@ -72,7 +72,7 @@ export default class PokeDB {
         await this.client!.query(query, pokemonsValues);
     }
 
-    public async getPokemonsFromDb(minIndex:string, maxIndex:string): Promise<Pokemon[]> {
+    public async getPokemonsFromDb(minIndex:string, maxIndex:string = minIndex): Promise<Pokemon[]> {
         const query: string = `SELECT * FROM Products WHERE id BETWEEN ${minIndex} AND ${maxIndex};`;
         const pokemonsArray: Pokemon[] = [];
         const results = (await this.client!.query(query)).rows;
