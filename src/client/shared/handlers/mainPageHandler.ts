@@ -25,21 +25,24 @@ export default class MainPage extends PageHandler {
 
     private async buildPage(): Promise<void> {
         // Waits before generating any components.
-        this.pokemonsStorage = (await (await fetch(`http://127.0.0.1:4000/json?limit=10000&offset=${this.pokemonsStorage.length}`)).json())['data'];
-        this.generateBasicPokemonList();
-        this.pullDataFromServer();
+        this.pokemonsStorage = (await (await fetch(`http://127.0.0.1:4000/json?limit=100&offset=${this.pokemonsStorage.length}`)).json())['data'];
+        this.generateComponentList();
 
         const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
         this.renderComponents(pokemonListContainer, false, this.currentRenderedComponents, 20);
         this.currentRenderedComponents += 20;
     }
 
-    public renderMore(): void {
+    public async renderMore(): Promise<void> {
         if (this.isSearchMode === true) {
             return;
         }
         const amount = 20; // Edit this to control the amount of elements to render.
         if (window.innerHeight + document.documentElement.scrollTop + 50 > document.scrollingElement!.scrollHeight && this.isCurrentlyLoading === false) {
+            //Get from server {amount} more pokemons and then generate the components
+            this.pokemonsStorage = this.pokemonsStorage.concat((await (await fetch(`http://127.0.0.1:4000/json?limit=${amount}&offset=${this.pokemonsStorage.length}`)).json())['data']);
+            this.generateComponentList();
+
             this.isCurrentlyLoading = true;
             window.setTimeout(() => {
                 const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
@@ -50,20 +53,8 @@ export default class MainPage extends PageHandler {
         }
     }
 
-    private async pullDataFromServer() {
-        let response;
-        do {
-            response = (await (await fetch(`http://127.0.0.1:4000/json?limit=10000&offset=${this.pokemonsStorage.length}`)).json());     
-            if (response['isDone'] === true) {
-                break;
-            }
-            this.pokemonsStorage = this.pokemonsStorage.concat(response['data']);
-            this.generateBasicPokemonList();
-        }while(response['isDone'] !== true)
-        
-    }
 
-    private generateBasicPokemonList(): void {
+    private generateComponentList(): void {
         const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
         for (let i = this.components.length; i < this.pokemonsStorage.length; i++) {
             this.createComponent(pokemonListContainer, this.pokemonsStorage[i]);
