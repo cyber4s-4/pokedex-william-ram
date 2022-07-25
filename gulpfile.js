@@ -76,7 +76,7 @@ gulp.task('watch-tsc', () => {
 });
 
 gulp.task('watch-server', () => {
-  gulp.watch('./dist/tsc/server/mongo.js', gulp.series('transfer-server'));
+  gulp.watch('./dist/tsc/server/dataBase.js', gulp.series('transfer-server'));
   gulp.watch('./dist/tsc/server/express.js', gulp.series('transfer-server'));
   gulp.watch('./src/server/pokemonsData.json', gulp.series('transfer-data'));
   
