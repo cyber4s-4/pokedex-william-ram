@@ -1,5 +1,4 @@
 import { BasicPokemonInfo, Pokemon } from "./pokemon";
-import * as fs from "fs";
 import * as cors from "cors";
 import * as bodyParser from "body-parser";
 import * as path from "path";
@@ -21,9 +20,13 @@ app.get("/json", async (req, res) => {
         const limit = req.query["limit"];
         const offset = req.query["offset"];
         let isDone = false;
-        const limitedJSON = await db.getPokemonsFromDb(String(limit) , String(offset));
+        const limitedJSON = await db.getPokemonsFromDb(Number(offset), Number(limit) + Number(offset));
+        limitedJSON.forEach((pokemon) => console.log(pokemon.basicInfo.id));
+        
         if(limitedJSON.length < Number(limit))
             isDone = true;
+        console.log(isDone);
+        
         res.json({ data: limitedJSON, isDone: isDone });
     } catch (e) {
         console.log(e);
@@ -48,7 +51,7 @@ app.get("/pokemon/:id", (req, res) => {
 app.get("/getPokemon/:id", async (req, res) => {
     console.log("Sending client pokemon " + req.params["id"] + " json");
     console.log(db);
-    const pokemon = (await db.getPokemonsFromDb(req.params["id"]))[0];
+    const pokemon = (await db.getPokemonsFromDb(Number(req.params["id"])))[0];
     if (pokemon !== undefined) {
         res.json(pokemon);
     } else {
@@ -58,7 +61,7 @@ app.get("/getPokemon/:id", async (req, res) => {
 });
 
 app.listen(portHttp, async () => {
-    // await db.connect();
+    await db.connect();
     console.log("Hosted: http://localhost:" + portHttp);
 });
 

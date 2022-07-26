@@ -16,7 +16,7 @@ export default class PokeDB {
     private async create(): Promise<void> {
         this.client = new Client({
             connectionString:
-            'postgres://hhdyfrtcydaofk:1d38bbc5fb21fadac56e49d303e2a297febd2076112ba61063aa173b73c02145@ec2-34-235-31-124.compute-1.amazonaws.com:5432/deb63rabfhna07',
+            'postgres://nsjvsjccfhprig:79cfa062ba7aa9537feb655bca7397ded08a600ffafd9a3a69584145efff1ffc@ec2-34-247-172-149.eu-west-1.compute.amazonaws.com:5432/dcoh58k04u0s02',
             ssl: {
                 rejectUnauthorized: false,
             },
@@ -73,11 +73,12 @@ export default class PokeDB {
         await this.client!.query(query, pokemonsValues);
     }
 
-    public async getPokemonsFromDb(minIndex:string, maxIndex:string = minIndex): Promise<Pokemon[]> {
-        const query: string = `SELECT * FROM pokemons WHERE id BETWEEN ${minIndex} AND ${maxIndex};`;
+    public async getPokemonsFromDb(fromId:number, toId:number = fromId): Promise<Pokemon[]> {
+        console.log(fromId, toId);
+        
+        const query: string = `SELECT * FROM pokemons WHERE id::INTEGER BETWEEN ${fromId} AND ${toId};`;
         const pokemonsArray: Pokemon[] = [];
         const results = (await this.client!.query(query)).rows;
-        console.log(results);
         for (let i = 0; i < results.length; i++) {
             pokemonsArray.push(
                 new Pokemon(
@@ -91,7 +92,6 @@ export default class PokeDB {
                 )
             );
         }
-        console.log(pokemonsArray);
         return pokemonsArray;
     }
 }

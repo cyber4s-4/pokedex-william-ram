@@ -9,13 +9,13 @@ export default class MainPage extends PageHandler {
 
     // Search related variables.
     private isSearchMode: boolean;
-    private isCurrentlyLoading: boolean;
     private renderedSearchElements: number;
     private pokemonSearchIndexes: number[];
+    private isDoneFetching: boolean;
 
     constructor() {
         super();
-        this.isCurrentlyLoading = false;
+        this.isDoneFetching = true;
         this.currentRenderedComponents = 0;
         this.isSearchMode = false;
         this.renderedSearchElements = 0;
@@ -25,7 +25,9 @@ export default class MainPage extends PageHandler {
 
     private async buildPage(): Promise<void> {
         // Waits before generating any components.
-        this.pokemonsStorage = (await (await fetch(`http://127.0.0.1:4000/json?limit=100&offset=${this.pokemonsStorage.length}`)).json())['data'];
+        this.pokemonsStorage = (await (await fetch(`http://127.0.0.1:4000/json?limit=20&offset=${this.pokemonsStorage.length}`)).json())['data'];
+        console.log(this.pokemonsStorage.length);
+        
         this.generateComponentList();
 
         const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
@@ -37,19 +39,19 @@ export default class MainPage extends PageHandler {
         if (this.isSearchMode === true) {
             return;
         }
-        const amount = 20; // Edit this to control the amount of elements to render.
-        if (window.innerHeight + document.documentElement.scrollTop + 50 > document.scrollingElement!.scrollHeight && this.isCurrentlyLoading === false) {
+        if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight && this.isDoneFetching === true) {
+            const amount = 20; // Edit this to control the amount of elements to render.        
             //Get from server {amount} more pokemons and then generate the components
-            this.pokemonsStorage = this.pokemonsStorage.concat((await (await fetch(`http://127.0.0.1:4000/json?limit=${amount}&offset=${this.pokemonsStorage.length}`)).json())['data']);
+            this.isDoneFetching = false;
+            this.pokemonsStorage = this.pokemonsStorage.concat((await (await fetch(`http://127.0.0.1:4000/json?limit=${amount}&offset=${this.pokemonsStorage.length + 1}`)).json())['data']);
+            this.isDoneFetching = true;
             this.generateComponentList();
 
-            this.isCurrentlyLoading = true;
-            window.setTimeout(() => {
-                const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
-                this.renderComponents(pokemonListContainer, false, this.currentRenderedComponents, amount);
-                this.currentRenderedComponents += amount;
-                this.isCurrentlyLoading = false;
-            }, 500);
+            const pokemonListContainer = document.getElementById('container') as HTMLDivElement;
+            console.log(this.pokemonsStorage.length, this.components.length, this.currentRenderedComponents);
+
+            this.renderComponents(pokemonListContainer, false, this.currentRenderedComponents, amount);
+            this.currentRenderedComponents += amount;
         }
     }
 
@@ -79,13 +81,13 @@ export default class MainPage extends PageHandler {
             this.pokemonSearchIndexes = [];
             this.pokemonsStorage.forEach((pokemonData, i) => {
                 if (pokemonData.basicInfo.name.toLowerCase().includes(searchContent.toLowerCase()) || pokemonData.basicInfo.id.includes(searchContent)) {
-                    this.pokemonSearchIndexes.push(i);                    
+                    this.pokemonSearchIndexes.push(i);
                 }
             });
-            
+
             this.renderedSearchElements = 0;
             for (let i = this.renderedSearchElements; i < this.renderedSearchElements + 20; i++) {
-                if(this.pokemonSearchIndexes[i] === undefined) {
+                if (this.pokemonSearchIndexes[i] === undefined) {
                     break;
                 }
                 this.components[this.pokemonSearchIndexes[i]].render();
@@ -102,18 +104,14 @@ export default class MainPage extends PageHandler {
             return;
         }
         const amount = 20; // Edit this to control the amount of elements to render after the first render.
-        if (window.innerHeight + document.documentElement.scrollTop + 50 > document.scrollingElement!.scrollHeight && this.isCurrentlyLoading === false) {
-            this.isCurrentlyLoading = true;
-            window.setTimeout(() => {
-                for (let i = this.renderedSearchElements; i < this.renderedSearchElements + amount; i++) {
-                    if(this.pokemonSearchIndexes[i] === undefined) {
-                        break;
-                    }
-                    this.components[this.pokemonSearchIndexes[i]].render();
+        if (window.innerHeight + document.documentElement.scrollTop + 50 > document.scrollingElement!.scrollHeight) {
+            for (let i = this.renderedSearchElements; i < this.renderedSearchElements + amount; i++) {
+                if (this.pokemonSearchIndexes[i] === undefined) {
+                    break;
                 }
-                this.renderedSearchElements += amount;
-                this.isCurrentlyLoading = false;
-            }, 500);
+                this.components[this.pokemonSearchIndexes[i]].render();
+            }
+            this.renderedSearchElements += amount;
         }
 
 
